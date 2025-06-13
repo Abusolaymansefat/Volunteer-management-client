@@ -2,6 +2,7 @@ import Lottie from 'lottie-react';
 import React, { use } from 'react';
 import registerLottie from '../../assets/lottes/register.json'
 import { AuthContex } from '../../contexts/AuthContexts/AuthContext';
+import { Link } from 'react-router';
 
 const Register = () => {
     const {createUser} =use(AuthContex)
@@ -43,6 +44,14 @@ const Register = () => {
               <button className="btn btn-neutral mt-4">Register</button>
             </fieldset>
             </form>
+            <div className="mt-6 text-center">
+        <p>
+        
+          <Link to="/login" className="text-blue-600 hover:underline">
+            login
+          </Link>
+        </p>
+      </div>
             {/* <SocialLogin></SocialLogin> */}
           </div>
         </div>
