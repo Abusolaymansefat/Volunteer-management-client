@@ -1,9 +1,3 @@
-// import { useContext } from "react";
-// import { Link, useLocation, useNavigate } from "react-router";
-// import { toast } from "react-toastify";
-// import { FaGoogle } from "react-icons/fa";
-// import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
-
 import { useContext } from "react";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -23,22 +17,22 @@ const Login = () => {
 
     login(email, password)
       .then(() => {
-        toast.success("Login successful!");
+        toast.success("✅Login successful!");
         navigate(from, { replace: true });
       })
       .catch(() => {
-        toast.error("Invalid email or password.");
+        toast.error("❌Invalid email or password.");
       });
   };
 
   const handleGoogleLogin = () => {
     loginWithGoogle()
       .then(() => {
-        toast.success("Logged in with Google!");
+        toast.success("✅Logged in with Google!");
         navigate(from, { replace: true });
       })
       .catch(() => {
-        toast.error("Google login failed.");
+        toast.error("❌Google login failed.");
       });
   };
 
