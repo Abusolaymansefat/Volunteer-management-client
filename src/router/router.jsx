@@ -8,6 +8,8 @@ import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Login from "../Pages/Login/Login";
 import PrivateRoute from "../routers/PrivateRoute";
 import AddVolunteer from "../Pages/Shared/AddVolunteer";
+import AllVolunteers from "../Pages/Home/AllVolunteer";
+import VolunteerDetails from "../Pages/Shared/VolunteerDetails";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +31,15 @@ const router = createBrowserRouter([
         {
           path: '/AddVolunteerPost',
           element: <PrivateRoute><AddVolunteer></AddVolunteer></PrivateRoute>
-        }
+        },
+        {
+        path: 'volunteer',
+        element: <AllVolunteers />
+      },
+      {
+        path: 'volunteer/:_id',
+        element: <VolunteerDetails />
+      }
 
     ]
   },

@@ -42,25 +42,25 @@ const AddVolunteer = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
-        {/* Thumbnail */}
+        
         <div>
           <label className="block font-semibold">Thumbnail URL</label>
           <input {...register("thumbnail")} type="text" className="w-full border px-4 py-2 rounded" required />
         </div>
 
-        {/* Title */}
+        
         <div>
           <label className="block font-semibold">Post Title</label>
           <input {...register("title")} type="text" className="w-full border px-4 py-2 rounded" required />
         </div>
 
-        {/* Description */}
+     
         <div>
           <label className="block font-semibold">Description</label>
           <textarea {...register("description")} rows="4" className="w-full border px-4 py-2 rounded" required />
         </div>
 
-        {/* Category */}
+     
         <div>
           <label className="block font-semibold">Category</label>
           <select {...register("category")} className="w-full text-black border px-4 py-2 rounded" required>
@@ -72,19 +72,19 @@ const AddVolunteer = () => {
           </select>
         </div>
 
-        {/* Location */}
+      
         <div>
           <label className="block font-semibold">Location</label>
           <input {...register("location")} type="text" className="w-full border px-4 py-2 rounded" required />
         </div>
 
-        {/* Number of Volunteers */}
+   
         <div>
           <label className="block font-semibold">No. of Volunteers Needed</label>
           <input {...register("volunteers")} type="number" min="1" className="w-full border px-4 py-2 rounded" required />
         </div>
 
-        {/* Deadline */}
+       
         <div>
           <label className="block font-semibold">Deadline</label>
           <DatePicker
@@ -96,19 +96,18 @@ const AddVolunteer = () => {
           />
         </div>
 
-        {/* Organizer Name */}
+        
         <div>
           <label className="block font-semibold">Organizer Name</label>
           <input value={user?.displayName || ""} readOnly className="w-full border px-4 py-2 rounded " />
         </div>
 
-        {/* Organizer Email */}
+        
         <div>
           <label className="block font-semibold">Organizer Email</label>
           <input value={user?.email || ""} readOnly className="w-full border px-4 py-2 rounded " />
         </div>
 
-        {/* Submit Button */}
         <div className="text-center">
           <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">
             Add Post

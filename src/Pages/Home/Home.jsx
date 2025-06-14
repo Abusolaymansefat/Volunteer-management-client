@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Banner from './Banner';
 import VolunteerNeedsNow from './VolunteerNeedsNow';
+import Meaningful from './Meaningful';
 
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
     <div>
       <Banner />
       <VolunteerNeedsNow volunteers={volunteers}></VolunteerNeedsNow>
+      <Meaningful></Meaningful>
      
     </div>
   );
