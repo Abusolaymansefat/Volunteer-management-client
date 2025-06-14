@@ -4,49 +4,62 @@ import { toast } from "react-toastify";
 import registerLottie from "../../assets/lottes/register.json";
 import Lottie from "lottie-react";
 import { Link, useNavigate } from "react-router";
+import { updateProfile } from "firebase/auth";
 
 const Register = () => {
   const { createUser } = useContext(AuthContex);
   const navigate = useNavigate();
 
   const handleRegister = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const photo = form.photo.value;
-    const password = form.password.value;
+  e.preventDefault();
+  const form = e.target;
+  const name = form.name.value;
+  const email = form.email.value;
+  const photo = form.photo.value;
+  const password = form.password.value;
 
-    // Password Validation
-    const uppercaseRegex = /[A-Z]/;
-    const lowercaseRegex = /[a-z]/;
+  // Password Validation
+  const uppercaseRegex = /[A-Z]/;
+  const lowercaseRegex = /[a-z]/;
 
-    if (!uppercaseRegex.test(password)) {
-      toast.error("❌ Password must contain at least one uppercase letter.");
-      return;
-    }
+  if (!uppercaseRegex.test(password)) {
+    toast.error("❌ Password must contain at least one uppercase letter.");
+    return;
+  }
 
-    if (!lowercaseRegex.test(password)) {
-      toast.error("❌ Password must contain at least one lowercase letter.");
-      return;
-    }
+  if (!lowercaseRegex.test(password)) {
+    toast.error("❌ Password must contain at least one lowercase letter.");
+    return;
+  }
 
-    if (password.length < 6) {
-      toast.error("❌ Password must be at least 6 characters long.");
-      return;
-    }
+  if (password.length < 6) {
+    toast.error("❌ Password must be at least 6 characters long.");
+    return;
+  }
 
+  createUser(email, password)
+    .then((result) => {
+      const user = result.user;
 
-    createUser(email, password)
-      .then(() => {
-        toast.success("✅ Registration successful!");
-        form.reset();
-        navigate("/");
+      // 🔧 Update displayName and photoURL
+      updateProfile(user, {
+        displayName: name,
+        photoURL: photo,
       })
-      .catch((error) => {
-        toast.error(`❌ ${error.message}`);
-      });
-  };
+        .then(() => {
+          toast.success("✅ Registration successful!");
+          form.reset();
+          navigate("/");
+        })
+        .catch((err) => {
+          toast.error("❌ Failed to set name and photo");
+          console.error(err);
+        });
+    })
+    .catch((error) => {
+      toast.error(`❌ ${error.message}`);
+    });
+};
 
   return (
     <div className="hero bg-base-200 min-h-screen">

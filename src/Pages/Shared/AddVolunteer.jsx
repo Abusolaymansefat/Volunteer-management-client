@@ -1,34 +1,43 @@
-// import React, { useState } from "react";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-// import { useForm } from "react-hook-form";
-// import UseAuth from "../../hooks/UseAuth";
-// import { toast } from "react-toastify";
-
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import UseAuth from "../../hooks/UseAuth";
 
-const AddPost = () => {
-  const { user } = UseAutt(); // custom hook for auth
+const AddVolunteer = () => {
+  const { user } = UseAuth();
   const { register, handleSubmit, reset } = useForm();
   const [deadline, setDeadline] = useState(new Date());
 
   const onSubmit = (data) => {
-    const postData = {
-      ...data,
-      deadline,
-      organizerName: user.displayName,
-      organizerEmail: user.email,
-    };
-    console.log(postData);
-    toast.success("Post added successfully!");
-    reset();
+  const postData = {
+    ...data,
+    deadline,
+    organizerName: user.displayName,
+    organizerEmail: user.email,
   };
 
+  fetch('http://localhost:3000/volunteer', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(postData),
+  })
+    .then((res) => res.json())
+    .then((result) => {
+      console.log("Saved to DB:", result);
+      toast.success("Post added successfully!");
+      reset();
+    })
+    .catch((error) => {
+      console.error("Error saving to DB:", error);
+      toast.error("Failed to add post");
+    });
+};
+
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+    <div className="max-w-3xl mx-auto p-6 rounded-lg shadow-md mt-10">
       <h2 className="text-2xl font-bold mb-6 text-center">Add Volunteer Post</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -54,7 +63,7 @@ const AddPost = () => {
         {/* Category */}
         <div>
           <label className="block font-semibold">Category</label>
-          <select {...register("category")} className="w-full border px-4 py-2 rounded" required>
+          <select {...register("category")} className="w-full text-black border px-4 py-2 rounded" required>
             <option value="">Select a category</option>
             <option value="healthcare">Healthcare</option>
             <option value="education">Education</option>
@@ -90,13 +99,13 @@ const AddPost = () => {
         {/* Organizer Name */}
         <div>
           <label className="block font-semibold">Organizer Name</label>
-          <input value={user?.displayName || ""} readOnly className="w-full border px-4 py-2 rounded bg-gray-100" />
+          <input value={user?.displayName || ""} readOnly className="w-full border px-4 py-2 rounded " />
         </div>
 
         {/* Organizer Email */}
         <div>
           <label className="block font-semibold">Organizer Email</label>
-          <input value={user?.email || ""} readOnly className="w-full border px-4 py-2 rounded bg-gray-100" />
+          <input value={user?.email || ""} readOnly className="w-full border px-4 py-2 rounded " />
         </div>
 
         {/* Submit Button */}
@@ -110,4 +119,4 @@ const AddPost = () => {
   );
 };
 
-export default AddPost;
+export default AddVolunteer;

@@ -2,8 +2,7 @@ import { useContext } from "react";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { NavLink } from "react-router";
 import { toast } from "react-toastify";
-import logoimg from "../../assets/logo/Old .png"
-
+import logoimg from "../../assets/logo/Old .png";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContex);
@@ -24,13 +23,7 @@ const Navbar = () => {
         <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to="/about">About</NavLink>
-      </li>
-      <li>
-        <NavLink to="/services">Services</NavLink>
-      </li>
-      <li>
-        <NavLink to="/contact">Contact</NavLink>
+        <NavLink to="/AddVolunteerPost">Add Volunteer Post</NavLink>
       </li>
     </>
   );
@@ -70,19 +63,19 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
-      
+
       <div className="navbar-end space-x-2">
         <input
-              type="checkbox"
-              className="toggle toggle-md"
-              onChange={(e) => {
-                document.documentElement.setAttribute(
-                  "data-theme",
-                  e.target.checked ? "dark" : "light"
-                );
-              }}
-              title="Toggle Dark Mode"
-            />
+          type="checkbox"
+          className="toggle toggle-md"
+          onChange={(e) => {
+            document.documentElement.setAttribute(
+              "data-theme",
+              e.target.checked ? "dark" : "light"
+            );
+          }}
+          title="Toggle Dark Mode"
+        />
         {user ? (
           <>
             <span className="font-semibold">{user.email}</span>

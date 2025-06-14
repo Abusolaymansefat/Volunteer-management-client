@@ -6,6 +6,8 @@ import Home from "../Pages/Home/Home";
 import Register from "../Pages/Register/Register";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Login from "../Pages/Login/Login";
+import PrivateRoute from "../routers/PrivateRoute";
+import AddVolunteer from "../Pages/Shared/AddVolunteer";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
         {
             path: '/login',
             Component: Login
+        },
+        {
+          path: '/AddVolunteerPost',
+          element: <PrivateRoute><AddVolunteer></AddVolunteer></PrivateRoute>
         }
 
     ]
