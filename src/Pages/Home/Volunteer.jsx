@@ -2,7 +2,9 @@ import React from 'react';
 
 const Volunteer = ({ volunteers }) => {
   return (
-    <div>
+    <div className='my-10 p-5 space-y-4'>
+        <h1 className="text-2xl text-center font-bold ">Church and Charity Template Kit</h1>
+        <p className='text-sm text-center text-shadow-gray-400'>The puprose of our church community is to worship the Glory of God. We live to be called to speak, think and work by remembering the gospel. </p>
       <h2 className="text-xl font-bold mb-4">Total Posts: {volunteers.length}</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
