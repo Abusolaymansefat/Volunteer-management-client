@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Banner from './Banner';
 import VolunteerNeedsNow from './VolunteerNeedsNow';
 import Meaningful from './Meaningful';
+import CTASection from './CTASection';
 
 
 const Home = () => {
@@ -15,9 +16,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <div className='my-10'>
       <Banner />
       <VolunteerNeedsNow volunteers={volunteers}></VolunteerNeedsNow>
+      <CTASection></CTASection>
       <Meaningful></Meaningful>
      
     </div>
