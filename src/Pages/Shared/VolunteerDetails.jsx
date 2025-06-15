@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";  
+import { Link, useParams } from "react-router";
 
 const VolunteerDetails = () => {
   const { _id } = useParams();
@@ -60,8 +60,7 @@ const VolunteerDetails = () => {
         <strong>Volunteers Needed:</strong> {post.volunteers}
       </p>
       <p>
-        <strong>Deadline:</strong>{" "}
-        {new Date(post.deadline).toLocaleDateString()}
+        <strong>Deadline:</strong> {new Date(post.deadline).toLocaleDateString()}
       </p>
       <p>
         <strong>Organizer Name:</strong> {post.organizerName}
@@ -70,9 +69,13 @@ const VolunteerDetails = () => {
         <strong>Organizer Email:</strong> {post.organizerEmail}
       </p>
 
-      <div className="mt-6">
+      <div className="mt-6 flex gap-4">
+        <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+          Volunteers Apply
+        </button>
+
         <Link to="/volunteer">
-          <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+          <button className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700">
             Back to Posts
           </button>
         </Link>

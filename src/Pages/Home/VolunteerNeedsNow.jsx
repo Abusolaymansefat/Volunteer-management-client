@@ -7,8 +7,8 @@ const VolunteerNeedsNow = () => {
 
   useEffect(() => {
     fetch("http://localhost:3000/volunteer/sorted")
-      .then(res => res.json())
-      .then(data => setPosts(data));
+      .then((res) => res.json())
+      .then((data) => setPosts(data));
   }, []);
 
   return (
@@ -30,7 +30,11 @@ const VolunteerNeedsNow = () => {
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <img src={post.thumbnail} alt={post.title} className="h-48 w-full object-cover" />
+            <img
+              src={post.thumbnail}
+              alt={post.title}
+              className="h-48 w-full object-cover"
+            />
             <div className="p-4">
               <h3 className="text-xl font-semibold">{post.title}</h3>
               <p className="text-sm text-gray-600">Category: {post.category}</p>

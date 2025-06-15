@@ -13,14 +13,19 @@ const ManageMyPosts = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    axios.get(`/my-posts?email=${user.email}`).then((res) => {
-      setMyPosts(Array.isArray(res.data) ? res.data : []);
-    });
+    axios
+      .get(`/my-posts?email=${user.email}`)
+      .then((res) => {
+        setMyPosts(Array.isArray(res.data) ? res.data : []);
+      })
+      .catch(() => setMyPosts([]));
 
-    axios.get(`/my-requests?email=${user.email}`).then((res) => {
-      console.log("Volunteer Requests Response:", res.data);
-      setMyRequests(Array.isArray(res.data) ? res.data : []);
-    });
+    axios
+      .get(`/my-requests?email=${user.email}`)
+      .then((res) => {
+        setMyRequests(Array.isArray(res.data) ? res.data : []);
+      })
+      .catch(() => setMyRequests([]));
   }, [user?.email]);
 
   const handleDelete = (id) => {
@@ -77,7 +82,9 @@ const ManageMyPosts = () => {
             {myPosts.map((post) => (
               <tr key={post._id} className="border-t text-left">
                 <td className="p-2">{post.title}</td>
-                <td className="p-2">{post.deadline}</td>
+                <td className="p-2">
+                  {new Date(post.deadline).toLocaleDateString()}
+                </td>
                 <td className="p-2">
                   <button
                     className="bg-blue-500 text-white px-3 py-1 mr-2 rounded"
