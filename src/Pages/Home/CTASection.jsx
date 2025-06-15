@@ -3,6 +3,7 @@ import React from "react";
 const CTASection = () => {
   return (
     <div className="bg-[#524f44] py-16 px-4">
+        <h1 className="text-center text-4xl text-[#fafaed] p-8">We Believe that We can Save More Life's with you</h1>
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
         <h2 className="text-4xl font-bold">Our Door Are Always Open to More People Who Want to Support Each Others!</h2>
       
