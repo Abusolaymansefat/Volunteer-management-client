@@ -1,5 +1,3 @@
-
-
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
@@ -13,7 +11,7 @@ const UpdatePost = () => {
   const [post, setPost] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/volunteer-posts/${id}`).then((res) => setPost(res.data));
+    axios.get(`/volunteer-posts/${id}`).then((res) => setPost(res.data));
   }, [id]);
 
   const handleUpdate = (e) => {
@@ -29,7 +27,7 @@ const UpdatePost = () => {
       deadline: form.deadline.value,
     };
 
-    axios.put(`/api/volunteer-posts/${id}`, updated).then(() => {
+    axios.put(`/volunteer-posts/${id}`, updated).then(() => {
       toast.success("Post updated successfully!");
       navigate("/manage-posts");
     });

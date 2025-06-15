@@ -52,7 +52,11 @@ const AuthProvider = ({ children }) => {
     loginWithGoogle,
   };
 
-  return <AuthContex value={authInfo}>{children}</AuthContex>;
+  return (
+    <AuthContex.Provider value={authInfo}>
+      {children}
+    </AuthContex.Provider>
+  );
 };
 
 export default AuthProvider;

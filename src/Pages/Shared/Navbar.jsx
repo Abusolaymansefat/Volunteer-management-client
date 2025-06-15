@@ -29,7 +29,7 @@ const Navbar = () => {
         <NavLink to="/manage-posts">Manage-Posts</NavLink>
       </li>
       <li>
-        <NavLink to="/all-posts">All Volunteer Posts</NavLink>
+        <NavLink to="/volunteer">All Volunteer Posts</NavLink>
       </li>
     </>
   );
