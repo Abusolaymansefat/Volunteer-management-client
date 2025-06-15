@@ -10,6 +10,8 @@ const Meaningful = () => {
       <motion.h2 whileHover={{ scale: 1.03 }} className="text-4xl md:text-5xl font-bold text-brown-900 mb-12">
         Create Premium <br /> Images with AI Engine
       </motion.h2>
+      <p>Join hands to create a better world. Volunteer today and make a
+            meaningful impact in your community.</p>
 
       <div className="relative flex justify-center items-center">
     
