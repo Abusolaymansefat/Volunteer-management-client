@@ -6,9 +6,15 @@ const VolunteerNeedsNow = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/volunteer/sorted")
+    fetch("http://localhost:3000/volunteer/top") // ঠিক URL
       .then((res) => res.json())
-      .then((data) => setPosts(data));
+      .then((data) => {
+        console.log("Fetched posts:", data); // ডিবাগিং
+        setPosts(data);
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
   }, []);
 
   return (
@@ -23,32 +29,36 @@ const VolunteerNeedsNow = () => {
       </motion.h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <motion.div
-            key={post._id}
-            className="border rounded-lg shadow-md overflow-hidden"
-            whileHover={{ scale: 1.03 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <img
-              src={post.thumbnail}
-              alt={post.title}
-              className="h-48 w-full object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-xl font-semibold">{post.title}</h3>
-              <p className="text-sm text-gray-600">Category: {post.category}</p>
-              <p className="text-sm text-gray-500 mb-4">
-                Deadline: {new Date(post.deadline).toLocaleDateString()}
-              </p>
-              <Link to={`/volunteer/${post._id}`}>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                  View Details
-                </button>
-              </Link>
-            </div>
-          </motion.div>
-        ))}
+        {Array.isArray(posts) && posts.length > 0 ? (
+          posts.map((post) => (
+            <motion.div
+              key={post._id}
+              className="border rounded-lg shadow-md overflow-hidden"
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <img
+                src={post.thumbnail}
+                alt={post.title}
+                className="h-48 w-full object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-xl font-semibold">{post.title}</h3>
+                <p className="text-sm text-gray-600">Category: {post.category}</p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Deadline: {new Date(post.deadline).toLocaleDateString()}
+                </p>
+                <Link to={`/volunteer/${post._id}`}>
+                  <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    View Details
+                  </button>
+                </Link>
+              </div>
+            </motion.div>
+          ))
+        ) : (
+          <p className="text-center col-span-full">No posts found</p>
+        )}
       </div>
 
       <div className="text-center mt-10">

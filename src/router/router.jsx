@@ -11,6 +11,7 @@ import AddVolunteer from "../Pages/Shared/AddVolunteer";
 import AllVolunteers from "../Pages/Home/AllVolunteer";
 import VolunteerDetails from "../Pages/Shared/VolunteerDetails";
 import ManageMyPosts from "../Pages/Shared/ManageMyPosts";
+import VolunteerRequestForm from "../Pages/Shared/VolunteerRequestForm";
 
 const router = createBrowserRouter([
   {
@@ -38,13 +39,18 @@ const router = createBrowserRouter([
           element: <PrivateRoute><ManageMyPosts></ManageMyPosts></PrivateRoute>
         },
         {
+        path: "/volunteer-request/:_id",
+        element: <PrivateRoute><VolunteerRequestForm></VolunteerRequestForm></PrivateRoute>
+      },
+        {
         path: 'volunteer',
         element: <AllVolunteers />
       },
       {
         path: 'volunteer/:_id',
         element: <VolunteerDetails />
-      }
+      },
+      
 
     ]
   },
