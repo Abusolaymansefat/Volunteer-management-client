@@ -31,6 +31,9 @@ const Navbar = () => {
       <li>
         <NavLink to="/volunteer">All Volunteer Posts</NavLink>
       </li>
+      <li>
+        <NavLink to="/volunteer-request/:_id">Be a Volunteer</NavLink>
+      </li>
     </>
   );
 

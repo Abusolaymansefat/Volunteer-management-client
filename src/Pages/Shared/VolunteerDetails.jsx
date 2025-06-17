@@ -35,7 +35,7 @@ const VolunteerDetails = () => {
         if (data.length > 0) {
           toast.warning("You have already applied for this post.");
         } else {
-          // ✅ Navigate to volunteer request form
+          
           navigate(`/volunteer-request/${post._id}`);
         }
       })

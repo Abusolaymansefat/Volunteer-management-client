@@ -67,6 +67,7 @@ const ManageMyPosts = () => {
 
       {/* My Posts Section */}
       <h3 className="text-2xl font-semibold mb-3">My Volunteer Need Posts</h3>
+      {myPosts.length}
       {myPosts.length === 0 ? (
         <p>You haven’t added any volunteer need posts yet.</p>
       ) : (
@@ -107,6 +108,7 @@ const ManageMyPosts = () => {
 
       {/* My Requests Section */}
       <h3 className="text-2xl font-semibold mb-3">My Volunteer Requests</h3>
+      {myRequests.length}
       {myRequests.length === 0 ? (
         <p>You haven’t requested to volunteer for any post yet.</p>
       ) : (
