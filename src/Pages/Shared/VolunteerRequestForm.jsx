@@ -13,7 +13,7 @@ const VolunteerRequestForm = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http:/localhost:3000/volunteer/${_id}`)
+    fetch(`http://localhost:3000/volunteer/${_id}`)
       .then(res => res.json())
       .then(data => {
         setPost(data);
@@ -43,9 +43,9 @@ const VolunteerRequestForm = () => {
     }
 
     try {
-      // Check if user already applied
+    
       const checkRes = await fetch(
-        `http:/localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`
+        `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`
       );
       const checkData = await checkRes.json();
 
@@ -54,7 +54,7 @@ const VolunteerRequestForm = () => {
         return;
       }
 
-      // Prepare request data
+      
       const requestData = {
         postId: post._id,
         title: post.title,
@@ -72,7 +72,7 @@ const VolunteerRequestForm = () => {
         status: "requested",
       };
 
-      // Post request
+    
       const res = await fetch("http://localhost:3000/volunteer-requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -81,13 +81,13 @@ const VolunteerRequestForm = () => {
 
       if (!res.ok) throw new Error("Failed to send request");
 
-      // Update volunteer count
-      await fetch(`http://localhost:3000/volunteer/${_id}/decrement-volunteers`, {
+      
+      await fetch(`http://localhost:3000/volunteer/${_id}`, {
         method: "PATCH",
       });
 
       toast.success("Request sent successfully!");
-      navigate("/my-requests");
+      navigate("/manage-posts");
     } catch (error) {
       toast.error("Something went wrong!",error);
     }
@@ -95,20 +95,13 @@ const VolunteerRequestForm = () => {
 
   if (loading) return <p className="text-center mt-10">Loading form...</p>;
 
-  if (!post) {
-    return (
-      <div className="text-center mt-10">
-        <p>Post not found.</p>
-        <Link to="/volunteer" className="text-blue-600 underline">Back to posts</Link>
-      </div>
-    );
-  }
+  
 
   return (
     <div className="max-w-3xl mx-auto p-6 rounded shadow mt-10">
       <h2 className="text-2xl font-bold mb-4">Apply for Volunteer Post</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Read-only Fields */}
+        
         <div>
           <label>Thumbnail</label>
           <img src={post.thumbnail} alt={post.title} className="w-full h-48 object-cover rounded" />
