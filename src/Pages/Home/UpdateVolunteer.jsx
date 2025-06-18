@@ -13,7 +13,7 @@ const UpdateVolunteer = () => {
     category: data.category || "",
     location: data.location || "",
     volunteers: data.volunteers || 1,
-    deadline: data.deadline?.split("T")[0] || "",
+    deadline: data.deadline?.split("T")[0] || "", // remove time part
   });
 
   const handleChange = (e) => {
@@ -23,7 +23,6 @@ const UpdateVolunteer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const res = await fetch(`http://localhost:3000/volunteer/${data._id}`, {
         method: "PUT",
@@ -33,7 +32,7 @@ const UpdateVolunteer = () => {
 
       if (res.ok) {
         toast.success("Post updated successfully!");
-        navigate("/volunteer");
+        navigate("/manage-posts"); // Better redirect
       } else {
         toast.error("Failed to update post.");
       }
@@ -43,11 +42,10 @@ const UpdateVolunteer = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 bg-white shadow-md p-6 rounded">
+    <div className="max-w-2xl mx-auto mt-10 shadow-md p-6 rounded">
       <h2 className="text-2xl font-bold mb-4">Update Volunteer Post</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
-          type="text"
           name="title"
           value={formData.title}
           onChange={handleChange}
@@ -56,7 +54,6 @@ const UpdateVolunteer = () => {
           required
         />
         <input
-          type="text"
           name="thumbnail"
           value={formData.thumbnail}
           onChange={handleChange}
@@ -86,7 +83,6 @@ const UpdateVolunteer = () => {
           <option value="Animal Welfare">Animal Welfare</option>
         </select>
         <input
-          type="text"
           name="location"
           value={formData.location}
           onChange={handleChange}
@@ -99,9 +95,9 @@ const UpdateVolunteer = () => {
           name="volunteers"
           value={formData.volunteers}
           onChange={handleChange}
-          placeholder="Number of Volunteers Needed"
-          className="w-full border px-3 py-2 rounded"
+          placeholder="Number of Volunteers"
           min="1"
+          className="w-full border px-3 py-2 rounded"
           required
         />
         <input

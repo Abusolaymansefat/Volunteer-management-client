@@ -87,7 +87,7 @@ const VolunteerRequestForm = () => {
       });
 
       toast.success("Request sent successfully!");
-      navigate("/volunteer-requests")
+      // navigate("/manage-posts");
     } catch (error) {
       toast.error("Something went wrong!",error);
     }

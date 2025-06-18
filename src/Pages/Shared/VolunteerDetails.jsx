@@ -29,7 +29,9 @@ const VolunteerDetails = () => {
       return;
     }
 
-    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`)
+    fetch(
+      `http://localhost:3000/volunteer?userEmail=${user.email}&postId=${post._id}`
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.length > 0) {
@@ -43,7 +45,9 @@ const VolunteerDetails = () => {
   };
 
   const handleDelete = async () => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this post?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
     if (!confirmDelete) return;
 
     try {
@@ -57,7 +61,7 @@ const VolunteerDetails = () => {
         toast.error("Failed to delete the post.");
       }
     } catch (error) {
-      toast.error("Error deleting the post.",error);
+      toast.error("Error deleting the post.", error);
     }
   };
 
@@ -65,15 +69,32 @@ const VolunteerDetails = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-md mt-10">
-      <img src={post.thumbnail} alt={post.title} className="w-full h-64 object-cover rounded" />
+      <img
+        src={post.thumbnail}
+        alt={post.title}
+        className="w-full h-64 object-cover rounded"
+      />
       <h2 className="text-3xl font-bold mt-4 mb-2">{post.title}</h2>
       <p className="text-gray-700 mb-4">{post.description}</p>
-      <p><strong>Category:</strong> {post.category}</p>
-      <p><strong>Location:</strong> {post.location}</p>
-      <p><strong>Volunteers Needed:</strong> {post.volunteers}</p>
-      <p><strong>Deadline:</strong> {new Date(post.deadline).toLocaleDateString()}</p>
-      <p><strong>Organizer Name:</strong> {post.organizerName}</p>
-      <p><strong>Organizer Email:</strong> {post.organizerEmail}</p>
+      <p>
+        <strong>Category:</strong> {post.category}
+      </p>
+      <p>
+        <strong>Location:</strong> {post.location}
+      </p>
+      <p>
+        <strong>Volunteers Needed:</strong> {post.volunteers}
+      </p>
+      <p>
+        <strong>Deadline:</strong>{" "}
+        {new Date(post.deadline).toLocaleDateString()}
+      </p>
+      <p>
+        <strong>Organizer Name:</strong> {post.organizerName}
+      </p>
+      <p>
+        <strong>Organizer Email:</strong> {post.organizerEmail}
+      </p>
 
       <div className="mt-6 flex flex-wrap gap-4">
         <button
@@ -89,25 +110,23 @@ const VolunteerDetails = () => {
           </button>
         </Link> */}
 
-        
-            <Link>
-            <button
-              onClick={() => navigate(`/update-volunteer/${_id}`)}
-              className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
-            >
-              Update
-            </button>
-            </Link>
+        <Link>
+          <button
+            onClick={() => navigate(`/update-volunteer/${_id}`)}
+            className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
+          >
+            Update
+          </button>
+        </Link>
 
-            <Link>
-            <button
-              onClick={handleDelete}
-              className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
-            >
-              Delete
-            </button>
-            </Link>
-         
+        <Link>
+          <button
+            onClick={handleDelete}
+            className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
+          >
+            Delete
+          </button>
+        </Link>
       </div>
     </div>
   );

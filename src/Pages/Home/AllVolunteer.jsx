@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
-const AllVolunteers = () => {
+const AllVolunteer = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,4 +59,4 @@ const AllVolunteers = () => {
   );
 };
 
-export default AllVolunteers;
+export default AllVolunteer;
