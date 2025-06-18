@@ -18,24 +18,28 @@ const Navbar = () => {
   };
 
   const links = (
-    <>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      <li>
-        <NavLink to="/AddVolunteerPost">Add Volunteer Post</NavLink>
-      </li>
-      <li>
-        <NavLink to="/manage-posts">Manage-Posts</NavLink>
-      </li>
-      <li>
-        <NavLink to="/volunteer">All Volunteer Posts</NavLink>
-      </li>
-      {/* <li>
-        <NavLink to="/volunteer-request/:_id">Be a Volunteer</NavLink>
-      </li> */}
-    </>
-  );
+  <>
+    <li>
+      <NavLink to="/">Home</NavLink>
+    </li>
+    {user && (
+      <>
+        <li>
+          <NavLink to="/AddVolunteerPost">Add Volunteer Post</NavLink>
+        </li>
+        <li>
+          <NavLink to="/manage-posts">Manage-Posts</NavLink>
+        </li>
+        <li>
+          <NavLink to="/volunteer">All Volunteer Posts</NavLink>
+        </li>
+        <li>
+          <NavLink to="/my-requests">My Requests</NavLink>
+        </li>
+      </>
+    )}
+  </>
+);
 
   return (
     <div className="navbar bg-base-100 shadow-sm">

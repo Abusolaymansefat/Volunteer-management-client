@@ -8,7 +8,7 @@ const ManageMyPosts = () => {
   const navigate = useNavigate();
 
   const [myPosts, setMyPosts] = useState([]);
-  const [myRequests, setMyRequests] = useState([]);
+  // const [myRequests, setMyRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const ManageMyPosts = () => {
     // Fetch volunteer requests made by this user
     fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`)
       .then((res) => res.json())
-      .then((data) => setMyRequests(data || []))
+      // .then((data) => setMyRequests(data || []))
       .catch(() => toast.error("Failed to fetch your volunteer requests"));
   }, [user]);
 
@@ -49,26 +49,6 @@ const ManageMyPosts = () => {
       })
       .catch(() => toast.error("Error deleting post."));
   };
-
-  // Optional: Cancel volunteer request
-  
-  const handleCancelRequest = (id) => {
-    if (!window.confirm("Cancel this request?")) return;
-
-    fetch(`http://localhost:3000/volunteer-requests/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => {
-        if (res.ok) {
-          toast.success("Request cancelled");
-          setMyRequests((prev) => prev.filter((req) => req._id !== id));
-        } else {
-          toast.error("Failed to cancel request");
-        }
-      })
-      .catch(() => toast.error("Error cancelling request"));
-  };
-  
 
   if (loading) {
     return (
@@ -94,6 +74,7 @@ const ManageMyPosts = () => {
             <table className="min-w-full border rounded">
               <thead>
                 <tr>
+                  <th className="p-3 border">Thumbnail</th>
                   <th className="p-3 border">Title</th>
                   <th className="p-3 border">Category</th>
                   <th className="p-3 border">Volunteers Needed</th>
@@ -104,6 +85,13 @@ const ManageMyPosts = () => {
               <tbody>
                 {myPosts.map((post) => (
                   <tr key={post._id} className="text-center border-t">
+                    <td className="p-3 border">
+                      <img
+                        src={post.thumbnail}
+                        alt={post.title}
+                        className="w-16 h-16 object-cover mx-auto rounded"
+                      />
+                    </td>
                     <td className="p-3 border">{post.title}</td>
                     <td className="p-3 border">{post.category}</td>
                     <td className="p-3 border">{post.volunteers}</td>
@@ -112,7 +100,9 @@ const ManageMyPosts = () => {
                     </td>
                     <td className="p-3 border space-x-2">
                       <button
-                        onClick={() => navigate(`/update-volunteer/${post._id}`)}
+                        onClick={() =>
+                          navigate(`/update-volunteer/${post._id}`)
+                        }
                         className="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500"
                       >
                         Update
@@ -129,39 +119,6 @@ const ManageMyPosts = () => {
               </tbody>
             </table>
           </div>
-        )}
-      </section>
-
-      {/* My Volunteer Requests */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">My Volunteer Requests</h2>
-        {myRequests.length === 0 ? (
-          <p className="text-gray-600">
-            You have not made any volunteer requests yet.
-          </p>
-        ) : (
-          <ul className="space-y-4">
-            {myRequests.map((req) => (
-              <li
-                key={req._id}
-                className="border p-4 rounded shadow flex justify-between items-center"
-              >
-                <div>
-                  <h3 className="font-semibold">{req.postTitle}</h3>
-                  <p className="text-sm text-gray-600">Status: {req.status}</p>
-                </div>
-                {/* Optional: Cancel Button */}
-                
-                <button
-                  onClick={() => handleCancelRequest(req._id)}
-                  className="text-red-500 hover:underline text-sm"
-                >
-                  Cancel Request
-                </button>
-               
-              </li>
-            ))}
-          </ul>
         )}
       </section>
     </div>

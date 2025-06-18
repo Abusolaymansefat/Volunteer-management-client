@@ -30,16 +30,15 @@ const VolunteerDetails = () => {
     }
 
     fetch(
-      `http://localhost:3000/volunteer?userEmail=${user.email}&postId=${post._id}`
+      `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`
     )
       .then((res) => res.json())
       .then((data) => {
         if (data.length > 0) {
-          toast("You have already applied for this post.");
+          toast.warning("You have already applied for this post.");
+        } else {
+          navigate(`/volunteer-request/${post._id}`);
         }
-        // } else {
-        //   navigate(`/volunteer-request/${post._id}`);
-        // }
       })
       .catch(() => toast.error("Failed to check your application status."));
   };
@@ -61,11 +60,13 @@ const VolunteerDetails = () => {
         toast.error("Failed to delete the post.");
       }
     } catch (error) {
-      toast.error("Error deleting the post.", error);
+      toast.error("Error deleting the post.");
     }
   };
 
   if (loading) return <p className="text-center mt-10">Loading details...</p>;
+
+  if (!post) return <p className="text-center mt-10">Post not found.</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-md mt-10">
@@ -104,29 +105,18 @@ const VolunteerDetails = () => {
           Be a Volunteer Apply
         </button>
 
-        {/* <Link to="/volunteer">
-          <button className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700">
-            Back to Posts
-          </button>
-        </Link> */}
-
-        <Link>
-          <button
-            onClick={() => navigate(`/update-volunteer/${_id}`)}
-            className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
-          >
+        <Link to={`/update-volunteer/${_id}`}>
+          <button className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600">
             Update
           </button>
         </Link>
 
-        <Link>
-          <button
-            onClick={handleDelete}
-            className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
-          >
-            Delete
-          </button>
-        </Link>
+        <button
+          onClick={handleDelete}
+          className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
