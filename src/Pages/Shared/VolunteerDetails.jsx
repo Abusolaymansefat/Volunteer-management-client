@@ -60,7 +60,7 @@ const VolunteerDetails = () => {
         toast.error("Failed to delete the post.");
       }
     } catch (error) {
-      toast.error("Error deleting the post.");
+      toast.error("Error deleting the post.", error);
     }
   };
 

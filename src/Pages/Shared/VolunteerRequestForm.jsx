@@ -43,7 +43,6 @@ const VolunteerRequestForm = () => {
     }
 
     try {
-      // Check if user already applied
       const checkRes = await fetch(
         `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`
       );
@@ -53,7 +52,7 @@ const VolunteerRequestForm = () => {
         return;
       }
 
-      // Create request data
+    
       const requestData = {
         postId: post._id,
         title: post.title,
@@ -71,17 +70,16 @@ const VolunteerRequestForm = () => {
         status: "requested",
       };
 
-      // Send apply request
+      
       const res = await fetch("http://localhost:3000/volunteer-requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData),
       });
-      if (!res.ok) throw new Error("Failed to send request");
+      if (!res.ok)("Failed to send request");
 
-      // Decrement volunteers count by 1
       await fetch(`http://localhost:3000/volunteer/${_id}`, {
-        method: "PATCH",
+  method: "PATCH",
       });
 
       toast.success("Request sent successfully!");

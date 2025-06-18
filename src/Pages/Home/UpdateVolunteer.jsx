@@ -13,7 +13,7 @@ const UpdateVolunteer = () => {
     category: data.category || "",
     location: data.location || "",
     volunteers: data.volunteers || 1,
-    deadline: data.deadline?.split("T")[0] || "", // remove time part
+    deadline: data.deadline?.split("T")[0] || "",
   });
 
   const handleChange = (e) => {
@@ -32,12 +32,12 @@ const UpdateVolunteer = () => {
 
       if (res.ok) {
         toast.success("Post updated successfully!");
-        navigate("/manage-posts"); // Better redirect
+        navigate("/manage-posts");
       } else {
         toast.error("Failed to update post.");
       }
     } catch (error) {
-      toast.error("Error while updating.");
+      toast.error("Error while updating.",error);
     }
   };
 
