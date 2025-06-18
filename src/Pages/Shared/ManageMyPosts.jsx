@@ -1,123 +1,89 @@
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router";
+import { toast } from "react-toastify";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
-import { useNavigate } from "react-router";
-import axios from "axios";
-import Swal from "sweetalert2";
 
 const ManageMyPosts = () => {
   const { user } = useContext(AuthContex);
-  const [myPosts, setMyPosts] = useState([]);
-  const [myRequests, setMyRequests] = useState([]);
-  const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // fetch user's posts
   useEffect(() => {
-    if (!user?.email) return;
+    fetch(`http://localhost:3000/volunteer?email=${user.email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPosts(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        toast.error("Failed to fetch your posts");
+        setLoading(false);
+      });
+  }, [user.email]);
 
-    axios.get(`/my-posts?email=${user.email}`).then((res) => {
-      setMyPosts(res.data || []);
-    });
-
-    axios.get(`/my-requests?email=${user.email}`).then((res) => {
-      setMyRequests(res.data || []);
-    });
-  }, [user?.email]);
-
+  // handle delete
   const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "This post will be deleted.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios.delete(`/volunteer-posts/${id}`).then(() => {
-          setMyPosts(myPosts.filter((post) => post._id !== id));
-          Swal.fire("Deleted!", "", "success");
-        });
-      }
-    });
+    if (confirm("Are you sure you want to delete this post?")) {
+      fetch(`http://localhost:3000/volunteer-requests/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then(() => {
+          toast.success("Post deleted successfully");
+          setPosts(posts.filter((post) => post._id !== id));
+        })
+        .catch(() => toast.error("Failed to delete post"));
+    }
   };
 
-  const handleCancel = (id) => {
-    Swal.fire({
-      title: "Cancel your request?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios.delete(`/volunteer-requests/${id}`).then(() => {
-          setMyRequests(myRequests.filter((r) => r._id !== id));
-          Swal.fire("Cancelled!", "", "success");
-        });
-      }
-    });
-  };
+  if (loading)
+    return <p className="text-center mt-10">Loading your posts...</p>;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6">Manage My Posts</h2>
-
-      {/* My Posts */}
-      <h3 className="text-xl font-semibold mb-2">My Volunteer Need Posts</h3>
-      {myPosts.length === 0 ? (
-        <p>No posts found.</p>
+    <div className="max-w-5xl mx-auto px-4 py-6">
+      <h2 className="text-3xl font-bold mb-6">My Volunteer Posts</h2>
+      {posts.length === 0 ? (
+        <p className="text-gray-600">You haven't created any posts yet.</p>
       ) : (
-        <table className="w-full mb-6 border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 text-left">Title</th>
-              <th className="p-2 text-left">Deadline</th>
-              <th className="p-2 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {myPosts.map((post) => (
-              <tr key={post._id} className="border-t">
-                <td className="p-2">{post.title}</td>
-                <td className="p-2">{new Date(post.deadline).toLocaleDateString()}</td>
-                <td className="p-2">
-                  <button onClick={() => navigate(`/update-post/${post._id}`)} className="mr-2 text-blue-600">
+        <div className="grid gap-6 md:grid-cols-2">
+          {posts.map((post) => (
+            <div key={post._id} className="border rounded-lg p-4 shadow-md">
+              <img
+                src={post.thumbnail}
+                alt={post.title}
+                className="w-full h-48 object-cover rounded"
+              />
+              <h3 className="text-xl font-semibold mt-2">{post.title}</h3>
+              <p className="text-sm text-gray-600 mb-2">{post.category}</p>
+              <p className="mb-2">
+                <strong>Location:</strong> {post.location}
+              </p>
+              <p>
+                <strong>Volunteers:</strong> {post.volunteers}
+              </p>
+              <p>
+                <strong>Deadline:</strong>{" "}
+                {new Date(post.deadline).toLocaleDateString()}
+              </p>
+
+              <div className="mt-4 flex gap-3">
+                <Link to={`/update-volunteer/${post._id}`}>
+                  <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded">
                     Update
                   </button>
-                  <button onClick={() => handleDelete(post._id)} className="text-red-600">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+                </Link>
 
-      {/* My Requests */}
-      <h3 className="text-xl font-semibold mb-2">My Volunteer Requests</h3>
-      {myRequests.length === 0 ? (
-        <p>No requests found.</p>
-      ) : (
-        <table className="w-full border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="p-2 text-left">Post</th>
-              <th className="p-2 text-left">Category</th>
-              <th className="p-2 text-left">Cancel</th>
-            </tr>
-          </thead>
-          <tbody>
-            {myRequests.map((r) => (
-              <tr key={r._id} className="border-t">
-                <td className="p-2">{r.title}</td>
-                <td className="p-2">{r.category}</td>
-                <td className="p-2">
-                  <button onClick={() => handleCancel(r._id)} className="text-red-600">
-                    Cancel
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                <button
+                  onClick={() => handleDelete(post._id)}
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

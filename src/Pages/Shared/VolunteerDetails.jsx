@@ -33,28 +33,35 @@ const VolunteerDetails = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.length > 0) {
-          toast.warning("You have already applied for this post.");
-        } else {
-          
-          navigate(`/volunteer-request/${post._id}`);
+          toast("You have already applied for this post.");
         }
+        // } else {
+        //   navigate(`/volunteer-request/${post._id}`);
+        // }
       })
       .catch(() => toast.error("Failed to check your application status."));
   };
 
-  if (loading) return <p className="text-center mt-10">Loading details...</p>;
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this post?");
+    if (!confirmDelete) return;
 
-  if (!post)
-    return (
-      <div className="text-center mt-10">
-        <p>Volunteer post not found.</p>
-        <Link to="/volunteer">
-          <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
-            Back to Posts
-          </button>
-        </Link>
-      </div>
-    );
+    try {
+      const res = await fetch(`http://localhost:3000/volunteer/${post._id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        toast.success("Post deleted successfully!");
+        navigate("/volunteer");
+      } else {
+        toast.error("Failed to delete the post.");
+      }
+    } catch (error) {
+      toast.error("Error deleting the post.",error);
+    }
+  };
+
+  if (loading) return <p className="text-center mt-10">Loading details...</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-md mt-10">
@@ -68,18 +75,39 @@ const VolunteerDetails = () => {
       <p><strong>Organizer Name:</strong> {post.organizerName}</p>
       <p><strong>Organizer Email:</strong> {post.organizerEmail}</p>
 
-      <div className="mt-6 flex gap-4">
+      <div className="mt-6 flex flex-wrap gap-4">
         <button
           onClick={handleVolunteerApply}
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
         >
           Be a Volunteer Apply
         </button>
-        <Link to="/volunteer">
+
+        {/* <Link to="/volunteer">
           <button className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700">
             Back to Posts
           </button>
-        </Link>
+        </Link> */}
+
+        
+            <Link>
+            <button
+              onClick={() => navigate(`/update-volunteer/${_id}`)}
+              className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
+            >
+              Update
+            </button>
+            </Link>
+
+            <Link>
+            <button
+              onClick={handleDelete}
+              className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
+            >
+              Delete
+            </button>
+            </Link>
+         
       </div>
     </div>
   );

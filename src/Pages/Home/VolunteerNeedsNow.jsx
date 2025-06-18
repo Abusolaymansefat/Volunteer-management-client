@@ -6,10 +6,10 @@ const VolunteerNeedsNow = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/volunteer/top") // ঠিক URL
+    fetch("http://localhost:3000/volunteer/top") 
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched posts:", data); // ডিবাগিং
+        console.log("Fetched posts:", data); 
         setPosts(data);
       })
       .catch((error) => {
