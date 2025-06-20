@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
         const userData = {email: currentUser.email}
         axios.post('http://localhost:3000/jwt', userData, {
           withCredentials: true, 
-          cr
+          
         })
         .then(res => {
           console.log( res.data)
@@ -53,6 +53,7 @@ const AuthProvider = ({ children }) => {
         })
         .catch(error => console.log(error))
       }
+      console.log('user in the auth state chang', currentUser);
     });
     return () => unsubscribe();
   }, []);

@@ -43,10 +43,10 @@ const VolunteerRequestForm = () => {
     }
 
     try {
+      // Check if already applied
       const checkRes = await fetch(
-        `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,{
-          credentials: 'include'
-        }
+        `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
+        { credentials: "include" }
       );
       const checkData = await checkRes.json();
       if (checkData.length > 0) {
@@ -54,7 +54,7 @@ const VolunteerRequestForm = () => {
         return;
       }
 
-    
+      // Prepare data
       const requestData = {
         postId: post._id,
         title: post.title,
@@ -72,18 +72,22 @@ const VolunteerRequestForm = () => {
         status: "requested",
       };
 
-      
+      // Submit request
       const res = await fetch("http://localhost:3000/volunteer-requests", {
-        credentials: 'include',
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData),
       });
-      if (!res.ok)("Failed to send request");
 
+      if (!res.ok) {
+        throw new Error("Failed to send request");
+      }
+
+      // Decrement volunteer count (PATCH)
       await fetch(`http://localhost:3000/volunteer/${_id}`, {
-  method: "PATCH",
-  credentials: 'include'
+        method: "PATCH",
+        credentials: "include",
       });
 
       toast.success("Request sent successfully!");
