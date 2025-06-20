@@ -8,7 +8,9 @@ const MyVolunteerRequests = () => {
 
   useEffect(() => {
     if (!user?.email) return;
-    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`)
+    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`, {
+      credentials: 'include'
+    })
       .then((res) => res.json())
       .then((data) => setRequests(data || []))
       .catch(() => toast.error("Failed to fetch your requests"));
@@ -17,6 +19,7 @@ const MyVolunteerRequests = () => {
   const handleCancelRequest = (id) => {
     fetch(`http://localhost:3000/volunteer-requests/${id}`, {
       method: "DELETE",
+      credentials: 'include',
     })
       .then((res) => {
         if (!res.ok) throw new Error();

@@ -15,7 +15,9 @@ const ManageMyPosts = () => {
     if (!user?.email) return;
 
     // Fetch volunteer posts created by this user
-    fetch(`http://localhost:3000/volunteer?organizerEmail=${user.email}`)
+    fetch(`http://localhost:3000/volunteer?organizerEmail=${user.email}`,{
+      credentials: 'include'
+    })
       .then((res) => res.json())
       .then((data) => {
         setMyPosts(data || []);
@@ -26,10 +28,11 @@ const ManageMyPosts = () => {
         setLoading(false);
       });
 
-    // Fetch volunteer requests made by this user
-    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`)
+   
+    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`,{
+      credentials: 'include'
+    })
       .then((res) => res.json())
-      // .then((data) => setMyRequests(data || []))
       .catch(() => toast.error("Failed to fetch your volunteer requests"));
   }, [user]);
 
@@ -38,6 +41,7 @@ const ManageMyPosts = () => {
 
     fetch(`http://localhost:3000/volunteer/${id}`, {
       method: "DELETE",
+      credentials: 'include'
     })
       .then((res) => {
         if (res.ok) {

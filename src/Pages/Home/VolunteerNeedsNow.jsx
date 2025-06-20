@@ -1,22 +1,8 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 
-const VolunteerNeedsNow = () => {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/volunteer/top") 
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched posts:", data); 
-        setPosts(data);
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-      });
-  }, []);
-
+const VolunteerNeedsNow = ({ posts = [] }) => {
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
       <motion.h2

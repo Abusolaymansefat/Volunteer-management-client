@@ -19,6 +19,7 @@ const AddVolunteer = () => {
 
   fetch('http://localhost:3000/volunteer', {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },

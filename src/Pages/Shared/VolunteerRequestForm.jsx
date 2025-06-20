@@ -44,11 +44,13 @@ const VolunteerRequestForm = () => {
 
     try {
       const checkRes = await fetch(
-        `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`
+        `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,{
+          credentials: 'include'
+        }
       );
       const checkData = await checkRes.json();
       if (checkData.length > 0) {
-        toast.warning("You have already applied for this post.");
+        toast("You have already applied for this post.");
         return;
       }
 
@@ -72,6 +74,7 @@ const VolunteerRequestForm = () => {
 
       
       const res = await fetch("http://localhost:3000/volunteer-requests", {
+        credentials: 'include',
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData),
@@ -80,6 +83,7 @@ const VolunteerRequestForm = () => {
 
       await fetch(`http://localhost:3000/volunteer/${_id}`, {
   method: "PATCH",
+  credentials: 'include'
       });
 
       toast.success("Request sent successfully!");
