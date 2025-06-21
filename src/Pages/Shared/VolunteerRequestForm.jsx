@@ -12,7 +12,7 @@ const VolunteerRequestForm = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/volunteer/${_id}`)
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer/${_id}`)
       .then((res) => res.json())
       .then((data) => {
         setPost(data);
@@ -43,9 +43,9 @@ const VolunteerRequestForm = () => {
     }
 
     try {
-      // Check if already applied
+      
       const checkRes = await fetch(
-        `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
+        `https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
         { credentials: "include" }
       );
       const checkData = await checkRes.json();
@@ -54,7 +54,7 @@ const VolunteerRequestForm = () => {
         return;
       }
 
-      // Prepare data
+      
       const requestData = {
         postId: post._id,
         title: post.title,
@@ -72,8 +72,8 @@ const VolunteerRequestForm = () => {
         status: "requested",
       };
 
-      // Submit request
-      const res = await fetch("http://localhost:3000/volunteer-requests", {
+     
+      const res = await fetch("https://volunteer-server-ten.vercel.app/volunteer-requests", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -84,10 +84,10 @@ const VolunteerRequestForm = () => {
         throw new Error("Failed to send request");
       }
 
-      // Decrement volunteer count (PATCH)
-      await fetch(`http://localhost:3000/volunteer/${_id}`, {
+      
+      await fetch(`https://volunteer-server-ten.vercel.app/volunteer/${_id}`, {
         method: "PATCH",
-        credentials: "include",
+        
       });
 
       toast.success("Request sent successfully!");
@@ -161,7 +161,7 @@ const VolunteerRequestForm = () => {
           className="w-full p-2 border rounded"
         />
 
-        {/* User Info */}
+      
         <input
           type="text"
           readOnly
@@ -175,7 +175,7 @@ const VolunteerRequestForm = () => {
           className="w-full p-2 border rounded"
         />
 
-        {/* Editable Suggestion */}
+       
         <textarea
           placeholder="Your suggestion"
           value={suggestion}

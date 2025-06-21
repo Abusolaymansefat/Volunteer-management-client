@@ -18,22 +18,22 @@ const Register = () => {
   const photo = form.photo.value;
   const password = form.password.value;
 
-  // Password Validation
+
   const uppercaseRegex = /[A-Z]/;
   const lowercaseRegex = /[a-z]/;
 
   if (!uppercaseRegex.test(password)) {
-    toast.error("❌ Password must contain at least one uppercase letter.");
+    toast.error("Password must contain at least one uppercase letter.");
     return;
   }
 
   if (!lowercaseRegex.test(password)) {
-    toast.error("❌ Password must contain at least one lowercase letter.");
+    toast.error("Password must contain at least one lowercase letter.");
     return;
   }
 
   if (password.length < 6) {
-    toast.error("❌ Password must be at least 6 characters long.");
+    toast.error("Password must be at least 6 characters long.");
     return;
   }
 
@@ -41,23 +41,23 @@ const Register = () => {
     .then((result) => {
       const user = result.user;
 
-      // 🔧 Update displayName and photoURL
+    
       updateProfile(user, {
         displayName: name,
         photoURL: photo,
       })
         .then(() => {
-          toast.success("✅ Registration successful!");
+          toast.success("Registration successful!");
           form.reset();
           navigate("/");
         })
         .catch((err) => {
-          toast.error("❌ Failed to set name and photo");
+          toast.error("Failed to set name and photo");
           console.error(err);
         });
     })
     .catch((error) => {
-      toast.error(`❌ ${error.message}`);
+      toast.error(` ${error.message}`);
     });
 };
 

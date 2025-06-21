@@ -40,9 +40,10 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
+      
       if(currentUser?.email){
         const userData = {email: currentUser.email}
-        axios.post('http://localhost:3000/jwt', userData, {
+        axios.post('https://volunteer-server-ten.vercel.app/jwt', userData, {
           withCredentials: true, 
           
         })
@@ -53,7 +54,7 @@ const AuthProvider = ({ children }) => {
         })
         .catch(error => console.log(error))
       }
-      console.log('user in the auth state chang', currentUser);
+      // console.log('user in the auth state chang', currentUser);
     });
     return () => unsubscribe();
   }, []);

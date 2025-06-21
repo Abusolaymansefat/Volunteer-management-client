@@ -8,7 +8,7 @@ const MyVolunteerRequests = () => {
 
   useEffect(() => {
     if (!user?.email) return;
-    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`, {
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}`, {
       credentials: 'include'
     })
       .then((res) => res.json())
@@ -17,7 +17,7 @@ const MyVolunteerRequests = () => {
   }, [user]);
 
   const handleCancelRequest = (id) => {
-    fetch(`http://localhost:3000/volunteer-requests/${id}`, {
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer-requests/${id}`, {
       method: "DELETE",
       credentials: 'include',
     })

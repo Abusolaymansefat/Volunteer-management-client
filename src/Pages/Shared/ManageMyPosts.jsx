@@ -8,14 +8,14 @@ const ManageMyPosts = () => {
   const navigate = useNavigate();
 
   const [myPosts, setMyPosts] = useState([]);
-  // const [myRequests, setMyRequests] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user?.email) return;
 
-    // Fetch volunteer posts created by this user
-    fetch(`http://localhost:3000/volunteer?organizerEmail=${user.email}`,{
+  
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer?organizerEmail=${user.email}`,{
       credentials: 'include'
     })
       .then((res) => res.json())
@@ -29,7 +29,7 @@ const ManageMyPosts = () => {
       });
 
    
-    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`,{
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}`,{
       credentials: 'include'
     })
       .then((res) => res.json())
@@ -39,7 +39,7 @@ const ManageMyPosts = () => {
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
-    fetch(`http://localhost:3000/volunteer/${id}`, {
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer/${id}`, {
       method: "DELETE",
       credentials: 'include'
     })
@@ -66,7 +66,7 @@ const ManageMyPosts = () => {
     <div className="max-w-6xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Manage My Posts</h1>
 
-      {/* My Volunteer Need Posts */}
+     
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">My Volunteer Need Posts</h2>
         {myPosts.length === 0 ? (

@@ -24,7 +24,7 @@ const UpdateVolunteer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:3000/volunteer/${data._id}`, {
+      const res = await fetch(`https://volunteer-server-ten.vercel.app/volunteer/${data._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

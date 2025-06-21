@@ -20,18 +20,23 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="/all-posts" className="hover:underline">
-                All Volunteer Posts
-              </Link>
-            </li>
-            <li>
               <Link to="/AddVolunteerPost" className="hover:underline">
-                Add Volunteer Post
+                /Add Volunteer Post
               </Link>
             </li>
             <li>
               <Link to="/manage-posts" className="hover:underline">
                 Manage My Posts
+              </Link>
+            </li>
+            <li>
+              <Link to="/volunteer" className="hover:underline">
+                All Volunteer Posts
+              </Link>
+            </li>
+            <li>
+              <Link to="/my-requests" className="hover:underline">
+                My-requests
               </Link>
             </li>
           </ul>
