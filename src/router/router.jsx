@@ -79,8 +79,12 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-requests',
-        element: <PrivateRoute><MyVolunteerRequests></MyVolunteerRequests></PrivateRoute>
+        path: "my-requests",
+        element: (
+          <PrivateRoute>
+            <MyVolunteerRequests></MyVolunteerRequests>
+          </PrivateRoute>
+        ),
       },
       {
         path: "volunteer/:_id",
