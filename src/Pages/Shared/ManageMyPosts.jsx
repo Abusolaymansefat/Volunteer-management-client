@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 const ManageMyPosts = () => {
   const { user } = useContext(AuthContex);
@@ -66,7 +67,6 @@ const ManageMyPosts = () => {
     <div className="max-w-6xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Manage My Posts</h1>
 
-     
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">My Volunteer Need Posts</h2>
         {myPosts.length === 0 ? (
@@ -102,20 +102,20 @@ const ManageMyPosts = () => {
                     <td className="p-3 border">
                       {new Date(post.deadline).toLocaleDateString()}
                     </td>
-                    <td className="p-3 border space-x-2">
+                    <td className="p-3 border space-x-4 flex justify-center">
                       <button
-                        onClick={() =>
-                          navigate(`/update-volunteer/${post._id}`)
-                        }
-                        className="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500"
+                        onClick={() => navigate(`/update-volunteer/${post._id}`)}
+                        className="text-yellow-500 hover:text-yellow-600 text-xl"
+                        title="Update Post"
                       >
-                        Update
+                        <FiEdit />
                       </button>
                       <button
                         onClick={() => handleDelete(post._id)}
-                        className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                        className="text-red-600 hover:text-red-700 text-xl"
+                        title="Delete Post"
                       >
-                        Delete
+                        <FiTrash2 />
                       </button>
                     </td>
                   </tr>

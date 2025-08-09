@@ -13,6 +13,7 @@ import ManageMyPosts from "../Pages/Shared/ManageMyPosts";
 import UpdateVolunteer from "../Pages/Home/UpdateVolunteer";
 import AllVolunteer from "../Pages/Home/AllVolunteer";
 import MyVolunteerRequests from "../Pages/Home/MyVolunteerRequests";
+import JoinPage from "../Pages/Home/JoinPage";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+       {
+        path: "/join",
+        Component: JoinPage, 
       },
       {
         path: "/register",

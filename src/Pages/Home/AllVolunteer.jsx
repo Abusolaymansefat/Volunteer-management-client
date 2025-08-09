@@ -29,11 +29,11 @@ const AllVolunteer = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       <h2 className="text-3xl font-bold mb-8 text-center">All Volunteer Posts</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {posts.map((post) => (
           <div
             key={post._id}
-            className="border rounded-lg shadow-md overflow-hidden"
+            className=" rounded-lg shadow-md overflow-hidden"
           >
             <img
               src={post.thumbnail}
@@ -42,12 +42,12 @@ const AllVolunteer = () => {
             />
             <div className="p-4">
               <h3 className="text-xl font-semibold">{post.title}</h3>
-              <p className="text-gray-600 mb-2">Category: {post.category}</p>
+              <p className="text-gray-600 mb-2"> {post.category}</p>
               <p className="text-gray-500 mb-4">
                 Deadline: {new Date(post.deadline).toLocaleDateString()}
               </p>
               <Link to={`/volunteer/${post._id}`}>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                <button className="bg-[#5896e6] text-white px-4 py-2 rounded hover:bg-[#2d71ca]">
                   View Details
                 </button>
               </Link>

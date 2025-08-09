@@ -3,6 +3,7 @@ import Banner from "./Banner";
 import VolunteerNeedsNow from "./VolunteerNeedsNow";
 import Meaningful from "./Meaningful";
 import CTASection from "./CTASection";
+import BecomeVolunteerSection from "./BecomeVolunteerSection";
 
 const Home = () => {
   const [volunteers, setVolunteers] = useState([]);
@@ -18,9 +19,10 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="my-10">
+    <div className="">
       <Banner />
       <VolunteerNeedsNow posts={volunteers} />
+      <BecomeVolunteerSection/>
       <CTASection />
       <Meaningful />
     </div>
