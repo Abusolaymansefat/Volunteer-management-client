@@ -68,7 +68,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/volunteer/${params.id}`).then((res) =>
+          fetch(`https://volunteer-server-ten.vercel.app/volunteer/${params.id}`).then((res) =>
             res.json()
           ),
         hydrateFallbackElement: (

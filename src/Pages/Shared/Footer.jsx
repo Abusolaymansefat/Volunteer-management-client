@@ -21,7 +21,7 @@ const Footer = () => {
             </li>
             <li>
               <Link to="/AddVolunteerPost" className="hover:underline">
-                /Add Volunteer Post
+                Add Volunteer Post
               </Link>
             </li>
             <li>

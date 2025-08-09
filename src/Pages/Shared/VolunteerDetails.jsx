@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
+import { FiEdit, FiTrash2, FiUserPlus } from "react-icons/fi";
 
 const VolunteerDetails = () => {
   const { _id } = useParams();
@@ -11,7 +12,7 @@ const VolunteerDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/volunteer/${_id}`)
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer/${_id}`)
       .then((res) => res.json())
       .then((data) => {
         setPost(data);
@@ -30,7 +31,7 @@ const VolunteerDetails = () => {
     }
 
     fetch(
-      `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`, {
+      `https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}&postId=${post._id}`, {
         credentials: 'include',
       }
     )
@@ -52,7 +53,7 @@ const VolunteerDetails = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:3000/volunteer/${post._id}`, {
+      const res = await fetch(`https://volunteer-server-ten.vercel.app/volunteer/${post._id}`, {
         method: "DELETE",
         credentials: 'include'
       });
@@ -100,24 +101,28 @@ const VolunteerDetails = () => {
         <strong>Organizer Email:</strong> {post.organizerEmail}
       </p>
 
+      
       <div className="mt-6 flex flex-wrap gap-4">
         <button
           onClick={handleVolunteerApply}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+          className="bg-[#1b5381] text-white px-6 py-2 rounded hover:bg-[#0f5fa0] flex items-center gap-2"
         >
+          <FiUserPlus />
           Be a Volunteer Apply
         </button>
 
         <Link to={`/update-volunteer/${_id}`}>
-          <button className="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600">
+          <button className="bg-[#5c85c4] text-white px-6 py-2 rounded hover:bg-[#072a5e] flex items-center gap-2">
+            <FiEdit />
             Update
           </button>
         </Link>
 
         <button
           onClick={handleDelete}
-          className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
+          className="bg-[#a11f3b] text-white px-6 py-2 rounded hover:bg-[#e74468] flex items-center gap-2"
         >
+          <FiTrash2 />
           Delete
         </button>
       </div>

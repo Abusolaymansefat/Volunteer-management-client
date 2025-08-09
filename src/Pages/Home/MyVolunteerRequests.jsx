@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
+import { FiXCircle } from "react-icons/fi";
 
 const MyVolunteerRequests = () => {
   const { user } = useContext(AuthContex);
@@ -8,7 +9,7 @@ const MyVolunteerRequests = () => {
 
   useEffect(() => {
     if (!user?.email) return;
-    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`, {
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}`, {
       credentials: 'include'
     })
       .then((res) => res.json())
@@ -17,7 +18,7 @@ const MyVolunteerRequests = () => {
   }, [user]);
 
   const handleCancelRequest = (id) => {
-    fetch(`http://localhost:3000/volunteer-requests/${id}`, {
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer-requests/${id}`, {
       method: "DELETE",
       credentials: 'include',
     })
@@ -56,18 +57,18 @@ const MyVolunteerRequests = () => {
                   className="w-20 h-20 object-cover rounded"
                 />
                 <div>
-                  <h3 className="bold">{req.postTitle}</h3>
+                  <h3 className="font-bold text-lg">{req.title || req.postTitle}</h3>
                   <p className="text-xl text-white ">
                     Category: {req.category}
                   </p>
-                  <p className="text-xl text-white">Status: {req.status}</p>
+                  <p className="text-xl text-white">{req.status}</p>
                 </div>
               </div>
               <button
                 onClick={() => handleCancelRequest(req._id)}
                 className="text-blue-300 hover:underline text-xl"
               >
-                Cancel Request
+                 <FiXCircle className="w-20 h-16" />
               </button>
             </li>
           ))}

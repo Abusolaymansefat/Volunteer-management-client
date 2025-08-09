@@ -15,9 +15,8 @@ const ManageMyPosts = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-  
-    fetch(`http://localhost:3000/volunteer?organizerEmail=${user.email}`,{
-      credentials: 'include'
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer?organizerEmail=${user.email}`, {
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
@@ -29,9 +28,8 @@ const ManageMyPosts = () => {
         setLoading(false);
       });
 
-   
-    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`,{
-      credentials: 'include'
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}`, {
+      credentials: "include",
     })
       .then((res) => res.json())
       .catch(() => toast.error("Failed to fetch your volunteer requests"));
@@ -40,9 +38,9 @@ const ManageMyPosts = () => {
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
-    fetch(`http://localhost:3000/volunteer/${id}`, {
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer/${id}`, {
       method: "DELETE",
-      credentials: 'include'
+      credentials: "include",
     })
       .then((res) => {
         if (res.ok) {
@@ -75,44 +73,49 @@ const ManageMyPosts = () => {
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full border rounded">
+            <table className="min-w-full border border-[#c4bdbd] rounded shadow-lg">
               <thead>
-                <tr>
-                  <th className="p-3 border">Thumbnail</th>
-                  <th className="p-3 border">Title</th>
-                  <th className="p-3 border">Category</th>
-                  <th className="p-3 border">Volunteers Needed</th>
-                  <th className="p-3 border">Deadline</th>
-                  <th className="p-3 border">Actions</th>
+                <tr className="text-black border border-[#c4bdbd]">
+                  <th className="p-3">Thumbnail</th>
+                  <th className="p-3">Title</th>
+                  <th className="p-3">Category</th>
+                  <th className="p-3">Volunteers Needed</th>
+                  <th className="p-3">Deadline</th>
+                  <th className="p-3">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {myPosts.map((post) => (
-                  <tr key={post._id} className="text-center border-t">
-                    <td className="p-3 border">
+                  <tr
+                    key={post._id}
+                    className="text-center hover:shadow-md transition-shadow duration-300"
+                  >
+                    <td className="p-3">
                       <img
                         src={post.thumbnail}
                         alt={post.title}
                         className="w-16 h-16 object-cover mx-auto rounded"
                       />
                     </td>
-                    <td className="p-3 border">{post.title}</td>
-                    <td className="p-3 border">{post.category}</td>
-                    <td className="p-3 border">{post.volunteers}</td>
-                    <td className="p-3 border">
+                    <td className="p-3">{post.title}</td>
+                    <td className="p-3">{post.category}</td>
+                    <td className="p-3">{post.volunteers}</td>
+                    <td className="p-3">
                       {new Date(post.deadline).toLocaleDateString()}
                     </td>
-                    <td className="p-3 border space-x-4 flex justify-center">
+                    <td className="p-3 space-x-4 flex justify-center">
                       <button
-                        onClick={() => navigate(`/update-volunteer/${post._id}`)}
-                        className="text-yellow-500 hover:text-yellow-600 text-xl"
+                        onClick={() =>
+                          navigate(`/update-volunteer/${post._id}`)
+                        }
+                        className="text-[#5fa191] hover:text-[#53c7aa] text-xl shadow-md hover:shadow-lg transition-shadow duration-300"
                         title="Update Post"
                       >
                         <FiEdit />
                       </button>
                       <button
                         onClick={() => handleDelete(post._id)}
-                        className="text-red-600 hover:text-red-700 text-xl"
+                        className="text-red-600 hover:text-red-700 text-xl shadow-md hover:shadow-lg transition-shadow duration-300"
                         title="Delete Post"
                       >
                         <FiTrash2 />

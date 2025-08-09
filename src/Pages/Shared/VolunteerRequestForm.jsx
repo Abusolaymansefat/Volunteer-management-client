@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
+import { FiSend } from "react-icons/fi";
 
 const VolunteerRequestForm = () => {
   const { _id } = useParams();
@@ -12,7 +13,7 @@ const VolunteerRequestForm = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/volunteer/${_id}`)
+    fetch(`https://volunteer-server-ten.vercel.app/volunteer/${_id}`)
       .then((res) => res.json())
       .then((data) => {
         setPost(data);
@@ -43,9 +44,8 @@ const VolunteerRequestForm = () => {
     }
 
     try {
-      
       const checkRes = await fetch(
-        `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
+        `https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
         { credentials: "include" }
       );
       const checkData = await checkRes.json();
@@ -54,7 +54,6 @@ const VolunteerRequestForm = () => {
         return;
       }
 
-      
       const requestData = {
         postId: post._id,
         title: post.title,
@@ -72,8 +71,7 @@ const VolunteerRequestForm = () => {
         status: "requested",
       };
 
-     
-      const res = await fetch("http://localhost:3000/volunteer-requests", {
+      const res = await fetch("https://volunteer-server-ten.vercel.app/volunteer-requests", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -84,10 +82,8 @@ const VolunteerRequestForm = () => {
         throw new Error("Failed to send request");
       }
 
-      
-      await fetch(`http://localhost:3000/volunteer/${_id}`, {
+      await fetch(`https://volunteer-server-ten.vercel.app/volunteer/${_id}`, {
         method: "PATCH",
-        
       });
 
       toast.success("Request sent successfully!");
@@ -161,7 +157,6 @@ const VolunteerRequestForm = () => {
           className="w-full p-2 border rounded"
         />
 
-      
         <input
           type="text"
           readOnly
@@ -175,7 +170,6 @@ const VolunteerRequestForm = () => {
           className="w-full p-2 border rounded"
         />
 
-       
         <textarea
           placeholder="Your suggestion"
           value={suggestion}
@@ -187,8 +181,9 @@ const VolunteerRequestForm = () => {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 flex items-center gap-2"
         >
+          <FiSend />
           Request
         </button>
       </form>

@@ -17,7 +17,7 @@ const AddVolunteer = () => {
     organizerEmail: user.email,
   };
 
-  fetch('http://localhost:3000/volunteer', {
+  fetch('https://volunteer-server-ten.vercel.app/volunteer', {
     method: 'POST',
     credentials: 'include',
     headers: {

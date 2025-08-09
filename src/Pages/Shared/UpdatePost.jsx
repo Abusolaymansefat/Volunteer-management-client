@@ -49,7 +49,7 @@ const UpdatePost = () => {
         <input value={user.displayName} disabled className="input" />
         <input value={user.email} disabled className="input" />
 
-        <button type="submit" className="bg-blue-600 text-white py-2 rounded">
+        <button type="submit" className="bg-[#258383] text-white py-2 rounded">
           Update Post
         </button>
       </form>
