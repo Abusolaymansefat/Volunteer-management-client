@@ -15,7 +15,7 @@ const ManageMyPosts = () => {
     if (!user?.email) return;
 
   
-    fetch(`https://volunteer-server-ten.vercel.app/volunteer?organizerEmail=${user.email}`,{
+    fetch(`http://localhost:3000/volunteer?organizerEmail=${user.email}`,{
       credentials: 'include'
     })
       .then((res) => res.json())
@@ -29,7 +29,7 @@ const ManageMyPosts = () => {
       });
 
    
-    fetch(`https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}`,{
+    fetch(`http://localhost:3000/volunteer-requests?userEmail=${user.email}`,{
       credentials: 'include'
     })
       .then((res) => res.json())
@@ -39,7 +39,7 @@ const ManageMyPosts = () => {
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
-    fetch(`https://volunteer-server-ten.vercel.app/volunteer/${id}`, {
+    fetch(`http://localhost:3000/volunteer/${id}`, {
       method: "DELETE",
       credentials: 'include'
     })

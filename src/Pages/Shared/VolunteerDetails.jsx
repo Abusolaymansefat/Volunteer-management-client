@@ -11,7 +11,7 @@ const VolunteerDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://volunteer-server-ten.vercel.app/volunteer/${_id}`)
+    fetch(`http://localhost:3000/volunteer/${_id}`)
       .then((res) => res.json())
       .then((data) => {
         setPost(data);
@@ -30,7 +30,7 @@ const VolunteerDetails = () => {
     }
 
     fetch(
-      `https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}&postId=${post._id}`, {
+      `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`, {
         credentials: 'include',
       }
     )
@@ -52,7 +52,7 @@ const VolunteerDetails = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`https://volunteer-server-ten.vercel.app/volunteer/${post._id}`, {
+      const res = await fetch(`http://localhost:3000/volunteer/${post._id}`, {
         method: "DELETE",
         credentials: 'include'
       });

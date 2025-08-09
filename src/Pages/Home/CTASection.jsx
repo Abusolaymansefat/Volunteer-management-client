@@ -2,21 +2,15 @@ import React from "react";
 
 const CTASection = () => {
   return (
-    <div className="bg-[#524f44] py-16 px-4">
-        <h1 className="text-center text-4xl text-[#fafaed] p-8">We Believe that We can Save More Life's with you</h1>
+    <div className="bg-[#a5a5a5] py-16 px-4">
+        <h1 className="text-center text-4xl text-[#1a1a18] p-8">We Believe that We can Save More Life's with you</h1>
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
         <h2 className="text-4xl font-bold">Our Door Are Always Open to More People Who Want to Support Each Others!</h2>
       
         <div
-          className="relative rounded-2xl overflow-hidden text-white"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1581090700227-1e37b190418e')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className="relative rounded-2xl overflow-hidden text-black"
         >
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+          <div className="absolute"></div>
           <div className="relative z-10 p-8 flex flex-col justify-between h-full">
             <h3 className="text-2xl font-bold mb-4">Become a volunteer</h3>
             <p className="mb-6">
@@ -31,15 +25,9 @@ const CTASection = () => {
 
        
         <div
-          className="relative rounded-2xl overflow-hidden text-white"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1607746882042-944635dfe10e')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className="relative rounded-2xl overflow-hidden text-black "
         >
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+          <div className="absolute inset-0 bg-opacity-60"></div>
           <div className="relative z-10 p-8 flex flex-col justify-between h-full">
             <h3 className="text-2xl font-bold mb-4">Join Us volunteer</h3>
             <p className="mb-6">

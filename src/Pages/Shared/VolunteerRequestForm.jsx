@@ -12,7 +12,7 @@ const VolunteerRequestForm = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://volunteer-server-ten.vercel.app/volunteer/${_id}`)
+    fetch(`http://localhost:3000/volunteer/${_id}`)
       .then((res) => res.json())
       .then((data) => {
         setPost(data);
@@ -45,7 +45,7 @@ const VolunteerRequestForm = () => {
     try {
       
       const checkRes = await fetch(
-        `https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
+        `http://localhost:3000/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
         { credentials: "include" }
       );
       const checkData = await checkRes.json();
@@ -73,7 +73,7 @@ const VolunteerRequestForm = () => {
       };
 
      
-      const res = await fetch("https://volunteer-server-ten.vercel.app/volunteer-requests", {
+      const res = await fetch("http://localhost:3000/volunteer-requests", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -85,7 +85,7 @@ const VolunteerRequestForm = () => {
       }
 
       
-      await fetch(`https://volunteer-server-ten.vercel.app/volunteer/${_id}`, {
+      await fetch(`http://localhost:3000/volunteer/${_id}`, {
         method: "PATCH",
         
       });
