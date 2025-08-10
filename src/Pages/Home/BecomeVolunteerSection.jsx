@@ -22,7 +22,7 @@ const BecomeVolunteerSection = () => {
         <span className="text-green-900">lunteer with VBD</span>
       </h2>
 
-      <p className="text-sm max-w-6xl text-[#fff] dark:text-gray-600 mb-10 leading-relaxed">
+      <p className="text-sm max-w-6xl text-black dark:text-gray-600 mb-10 leading-relaxed">
         At Volunteer for Bangladesh, our volunteers come from all walks of life,
         bringing unique perspectives and skills to our mission. We believe in
         the power of diversity, and every application is evaluated individually.

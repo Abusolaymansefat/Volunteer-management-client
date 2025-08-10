@@ -3,11 +3,13 @@ import { Link, useNavigate, useParams } from "react-router";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
 import { FiEdit, FiTrash2, FiUserPlus } from "react-icons/fi";
+import { RingLoader, ScaleLoader } from "react-spinners";
 
 const VolunteerDetails = () => {
   const { _id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [btnLoading, setBtnLoading] = useState(false); 
   const { user } = useContext(AuthContex);
   const navigate = useNavigate();
 
@@ -30,20 +32,24 @@ const VolunteerDetails = () => {
       return;
     }
 
+    setBtnLoading(true); 
     fetch(
-      `https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}&postId=${post._id}`, {
-        credentials: 'include',
-      }
+      `https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
+      { credentials: "include" }
     )
       .then((res) => res.json())
       .then((data) => {
+        setBtnLoading(false);
         if (data.length > 0) {
           toast.warning("You have already applied for this post.");
         } else {
           navigate(`/volunteer-request/${post._id}`);
         }
       })
-      .catch(() => toast.error("Failed to check your application status."));
+      .catch(() => {
+        setBtnLoading(false);
+        toast.error("Failed to check your application status.");
+      });
   };
 
   const handleDelete = async () => {
@@ -52,11 +58,16 @@ const VolunteerDetails = () => {
     );
     if (!confirmDelete) return;
 
+    setBtnLoading(true);
     try {
-      const res = await fetch(`https://volunteer-server-ten.vercel.app/volunteer/${post._id}`, {
-        method: "DELETE",
-        credentials: 'include'
-      });
+      const res = await fetch(
+        `https://volunteer-server-ten.vercel.app/volunteer/${post._id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      setBtnLoading(false);
       if (res.ok) {
         toast.success("Post deleted successfully!");
         navigate("/volunteer");
@@ -64,11 +75,17 @@ const VolunteerDetails = () => {
         toast.error("Failed to delete the post.");
       }
     } catch (error) {
+      setBtnLoading(false);
       toast.error("Error deleting the post.", error);
     }
   };
 
-  if (loading) return <p className="text-center mt-10">Loading details...</p>;
+  if (loading)
+    return (
+      <p className="text-center mt-10">
+        <ScaleLoader />
+      </p>
+    );
 
   if (!post) return <p className="text-center mt-10">Post not found.</p>;
 
@@ -101,14 +118,15 @@ const VolunteerDetails = () => {
         <strong>Organizer Email:</strong> {post.organizerEmail}
       </p>
 
-      
-      <div className="mt-6 flex flex-wrap gap-4">
+      <div className="mt-6 flex flex-wrap gap-4 items-center">
         <button
           onClick={handleVolunteerApply}
           className="bg-[#1b5381] text-white px-6 py-2 rounded hover:bg-[#0f5fa0] flex items-center gap-2"
+          disabled={btnLoading}
         >
           <FiUserPlus />
           Be a Volunteer Apply
+          {btnLoading && <RingLoader size={20} color="#fff" />} 
         </button>
 
         <Link to={`/update-volunteer/${_id}`}>
@@ -121,8 +139,10 @@ const VolunteerDetails = () => {
         <button
           onClick={handleDelete}
           className="bg-[#a11f3b] text-white px-6 py-2 rounded hover:bg-[#e74468] flex items-center gap-2"
+          disabled={btnLoading}
         >
           <FiTrash2 />
+          {btnLoading && <RingLoader size={20} color="#fff" />} 
           Delete
         </button>
       </div>
