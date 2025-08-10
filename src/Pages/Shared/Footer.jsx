@@ -1,4 +1,4 @@
-import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { FaFacebookF, FaGithub, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { Link } from "react-router";
 import footerLogo from "../../assets/logo/Old .png";
 
@@ -45,13 +45,13 @@ const Footer = () => {
         <div>
           <h3 className="text-xl font-semibold mb-3">Follow Us</h3>
           <div className="flex space-x-4">
-            <a href="https://facebook.com" target="_blank" rel="noreferrer">
+            <a href="https://www.facebook.com/abusolaymun.sefat/" target="_blank" rel="noreferrer">
               <FaFacebookF className="text-2xl hover:text-gray-200" />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer">
-              <FaTwitter className="text-2xl hover:text-gray-200" />
+            <a href="https://github.com/Abusolaymansefat" target="_blank" rel="noreferrer">
+              <FaGithub className="text-2xl hover:text-gray-200" />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noreferrer">
+            <a href="https://www.linkedin.com/in/abu-solayman-sefat/" target="_blank" rel="noreferrer">
               <FaLinkedinIn className="text-2xl hover:text-gray-200" />
             </a>
           </div>
