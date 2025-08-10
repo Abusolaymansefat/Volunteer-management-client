@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
 import { FiSend } from "react-icons/fi";
+import { ClipLoader } from "react-spinners";
 
 const VolunteerRequestForm = () => {
   const { _id } = useParams();
@@ -11,6 +12,7 @@ const VolunteerRequestForm = () => {
   const [post, setPost] = useState(null);
   const [suggestion, setSuggestion] = useState("");
   const [loading, setLoading] = useState(true);
+  const [btnLoading, setBtnLoading] = useState(false); // Button loading state
 
   useEffect(() => {
     fetch(`https://volunteer-server-ten.vercel.app/volunteer/${_id}`)
@@ -43,6 +45,8 @@ const VolunteerRequestForm = () => {
       return;
     }
 
+    setBtnLoading(true); // start loading
+
     try {
       const checkRes = await fetch(
         `https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
@@ -51,6 +55,7 @@ const VolunteerRequestForm = () => {
       const checkData = await checkRes.json();
       if (checkData.length > 0) {
         toast("You have already applied for this post.");
+        setBtnLoading(false);
         return;
       }
 
@@ -87,9 +92,12 @@ const VolunteerRequestForm = () => {
       });
 
       toast.success("Request sent successfully!");
+      setSuggestion("");
     } catch (error) {
       toast.error("Something went wrong!");
       console.error(error);
+    } finally {
+      setBtnLoading(false); // stop loading
     }
   };
 
@@ -181,10 +189,20 @@ const VolunteerRequestForm = () => {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 flex items-center gap-2"
+          disabled={btnLoading}
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 flex items-center gap-2 justify-center"
         >
-          <FiSend />
-          Request
+          {btnLoading ? (
+            <>
+              <ClipLoader size={20} color="#fff" />
+              Sending...
+            </>
+          ) : (
+            <>
+              <FiSend />
+              Request
+            </>
+          )}
         </button>
       </form>
     </div>

@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
+import { ClipLoader } from "react-spinners";
 
 const BecomeVolunteerSection = () => {
-     const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleJoinClick = () => {
-    navigate("/join");
+    setLoading(true);
+
+    // Simulate async action, তারপর navigate করব
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/join");
+    }, 1000); // 1 সেকেন্ড লোডিং দেখাবে
   };
+
   return (
     <section className="max-w-7xl bg-[#e4e0e0] px-5 py-4 flex flex-col items-center">
       <h1
@@ -34,8 +43,12 @@ const BecomeVolunteerSection = () => {
         Our Nation.
       </p>
 
-      <button onClick={handleJoinClick} className="bg-[#48bec7] hover:bg-[#528083] text-center transition text-black font-semibold py-3 px-8 rounded-full mt-6">
-        Join Us
+      <button
+        onClick={handleJoinClick}
+        className="bg-[#48bec7] hover:bg-[#528083] text-center transition text-black font-semibold py-3 px-8 rounded-full mt-6 flex justify-center items-center gap-2"
+        disabled={loading}
+      >
+        {loading ? <ClipLoader size={20} color="#000" /> : "Join Us"}
       </button>
     </section>
   );

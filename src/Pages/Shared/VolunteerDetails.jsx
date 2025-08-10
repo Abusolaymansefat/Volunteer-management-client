@@ -99,6 +99,9 @@ const VolunteerDetails = () => {
       <h2 className="text-3xl font-bold mt-4 mb-2">{post.title}</h2>
       <p className="text-gray-700 mb-4">{post.description}</p>
       <p>
+        <strong>Price:</strong> {post.Price}
+      </p>
+      <p>
         <strong>Category:</strong> {post.category}
       </p>
       <p>

@@ -1,6 +1,7 @@
 import { useLoaderData, useNavigate } from "react-router";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 const UpdateVolunteer = () => {
   const data = useLoaderData();
@@ -16,6 +17,8 @@ const UpdateVolunteer = () => {
     deadline: data.deadline?.split("T")[0] || "",
   });
 
+  const [loading, setLoading] = useState(false); // লোডিং স্টেট
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -23,12 +26,16 @@ const UpdateVolunteer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // লোডিং শুরু
     try {
-      const res = await fetch(`https://volunteer-server-ten.vercel.app/volunteer/${data._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `https://volunteer-server-ten.vercel.app/volunteer/${data._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (res.ok) {
         toast.success("Post updated successfully!");
@@ -37,13 +44,17 @@ const UpdateVolunteer = () => {
         toast.error("Failed to update post.");
       }
     } catch (error) {
-      toast.error("Error while updating.",error);
+      toast.error("Error while updating.");
+    } finally {
+      setLoading(false); // লোডিং শেষ
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 shadow-md p-6 rounded">
-      <h2 className="text-2xl font-bold mb-4">Update Volunteer Post</h2>
+    <div className="max-w-2xl mx-auto mt-10 shadow-md p-6 rounded bg-white dark:bg-gray-900">
+      <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+        Update Volunteer Post
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           name="title"
@@ -110,9 +121,16 @@ const UpdateVolunteer = () => {
         />
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+          disabled={loading}
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 flex items-center justify-center gap-2"
         >
-          Update Post
+          {loading ? (
+            <>
+              <ClipLoader size={20} color="#fff" /> Updating...
+            </>
+          ) : (
+            "Update Post"
+          )}
         </button>
       </form>
     </div>
