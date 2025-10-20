@@ -4,6 +4,8 @@ import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
 import { FiSend } from "react-icons/fi";
 import { ClipLoader } from "react-spinners";
+import axiosInstance from "../../api/axiosInstance";
+// import axiosInstance from "../../api/axiosInstance"; // ✅ import axios instance
 
 const VolunteerRequestForm = () => {
   const { _id } = useParams();
@@ -12,19 +14,23 @@ const VolunteerRequestForm = () => {
   const [post, setPost] = useState(null);
   const [suggestion, setSuggestion] = useState("");
   const [loading, setLoading] = useState(true);
-  const [btnLoading, setBtnLoading] = useState(false); // Button loading state
+  const [btnLoading, setBtnLoading] = useState(false);
 
+  // Fetch volunteer post
   useEffect(() => {
-    fetch(`http://localhost:3000/${_id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPost(data);
-        setLoading(false);
-      })
-      .catch(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await axiosInstance.get(`/volunteer/${_id}`);
+        setPost(res.data);
+      } catch (error) {
+        console.error(error);
         toast.error("Failed to load post data.");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchPost();
   }, [_id]);
 
   if (!user) {
@@ -45,16 +51,15 @@ const VolunteerRequestForm = () => {
       return;
     }
 
-    setBtnLoading(true); // start loading
+    setBtnLoading(true);
 
     try {
-      const checkRes = await fetch(
-        `https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}&postId=${post._id}`,
-        { credentials: "include" }
+      // Check if already applied
+      const checkRes = await axiosInstance.get(
+        `/volunteer-requests?userEmail=${user.email}&postId=${post._id}`
       );
-      const checkData = await checkRes.json();
-      if (checkData.length > 0) {
-        toast("You have already applied for this post.");
+      if (checkRes.data.length > 0) {
+        toast.warning("You have already applied for this post.");
         setBtnLoading(false);
         return;
       }
@@ -76,28 +81,19 @@ const VolunteerRequestForm = () => {
         status: "requested",
       };
 
-      const res = await fetch("https://volunteer-server-ten.vercel.app/volunteer-requests", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestData),
-      });
+      // Send volunteer request
+      await axiosInstance.post("/volunteer-requests", requestData);
 
-      if (!res.ok) {
-        throw new Error("Failed to send request");
-      }
-
-      await fetch(`http://localhost:3000/${_id}`, {
-        method: "PATCH",
-      });
+      // Optional: update original post (PATCH)
+      await axiosInstance.patch(`/volunteer/${_id}`);
 
       toast.success("Request sent successfully!");
       setSuggestion("");
     } catch (error) {
-      toast.error("Something went wrong!");
       console.error(error);
+      toast.error("Something went wrong!");
     } finally {
-      setBtnLoading(false); // stop loading
+      setBtnLoading(false);
     }
   };
 
@@ -116,67 +112,17 @@ const VolunteerRequestForm = () => {
           />
         </div>
 
-        <input
-          type="text"
-          readOnly
-          value={post?.title || ""}
-          className="w-full p-2 border rounded"
-        />
-        <textarea
-          readOnly
-          value={post?.description || ""}
-          className="w-full p-2 border rounded"
-          rows={3}
-        />
-        <input
-          type="text"
-          readOnly
-          value={post?.category || ""}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="text"
-          readOnly
-          value={post?.location || ""}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="number"
-          readOnly
-          value={post?.volunteers || 0}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="text"
-          readOnly
-          value={new Date(post?.deadline).toLocaleDateString() || ""}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="text"
-          readOnly
-          value={post?.organizerName || ""}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="email"
-          readOnly
-          value={post?.organizerEmail || ""}
-          className="w-full p-2 border rounded"
-        />
+        <input type="text" readOnly value={post?.title || ""} className="w-full p-2 border rounded" />
+        <textarea readOnly value={post?.description || ""} className="w-full p-2 border rounded" rows={3} />
+        <input type="text" readOnly value={post?.category || ""} className="w-full p-2 border rounded" />
+        <input type="text" readOnly value={post?.location || ""} className="w-full p-2 border rounded" />
+        <input type="number" readOnly value={post?.volunteers || 0} className="w-full p-2 border rounded" />
+        <input type="text" readOnly value={new Date(post?.deadline).toLocaleDateString() || ""} className="w-full p-2 border rounded" />
+        <input type="text" readOnly value={post?.organizerName || ""} className="w-full p-2 border rounded" />
+        <input type="email" readOnly value={post?.organizerEmail || ""} className="w-full p-2 border rounded" />
 
-        <input
-          type="text"
-          readOnly
-          value={user?.displayName || ""}
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="email"
-          readOnly
-          value={user?.email || ""}
-          className="w-full p-2 border rounded"
-        />
+        <input type="text" readOnly value={user?.displayName || ""} className="w-full p-2 border rounded" />
+        <input type="email" readOnly value={user?.email || ""} className="w-full p-2 border rounded" />
 
         <textarea
           placeholder="Your suggestion"
@@ -194,13 +140,11 @@ const VolunteerRequestForm = () => {
         >
           {btnLoading ? (
             <>
-              <ClipLoader size={20} color="#fff" />
-              Sending...
+              <ClipLoader size={20} color="#fff" /> Sending...
             </>
           ) : (
             <>
-              <FiSend />
-              Request
+              <FiSend /> Request
             </>
           )}
         </button>

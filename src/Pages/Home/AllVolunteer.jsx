@@ -1,40 +1,46 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { ScaleLoader } from "react-spinners";
+import axiosInstance from "../../api/axiosInstance";
+import useLoadingSpinner from "../../hooks/useLoadingSpinner";
 
 const AllVolunteer = () => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { loading, show, hide } = useLoadingSpinner();
 
   useEffect(() => {
-    fetch("http://localhost:3000/volunteer")
-      .then((res) => res.json())
-      .then((data) => {
-        setPosts(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching volunteers:", error);
-        setLoading(false);
-      });
+    const fetchPosts = async () => {
+      show(); // start loading
+      try {
+        const res = await axiosInstance.get("/volunteer");
+        setPosts(res.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        hide(); // stop loading
+      }
+    };
+
+    fetchPosts();
   }, []);
 
   if (loading) {
-    return <p className="text-center mt-10">Loading posts...</p>;
+    return (
+      <div className="flex justify-center items-center h-64 mt-10">
+        <ScaleLoader color="#5896e6" />
+      </div>
+    );
   }
 
-  if (posts.length === 0) {
+  if (posts.length === 0)
     return <p className="text-center mt-10">No volunteer posts found.</p>;
-  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       <h2 className="text-3xl font-bold mb-8 text-center">All Volunteer Posts</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {posts.map((post) => (
-          <div
-            key={post._id}
-            className=" rounded-lg shadow-md overflow-hidden"
-          >
+          <div key={post._id} className="rounded-lg shadow-md overflow-hidden">
             <img
               src={post.thumbnail}
               alt={post.title}
@@ -42,7 +48,7 @@ const AllVolunteer = () => {
             />
             <div className="p-4">
               <h3 className="text-xl font-semibold">{post.title}</h3>
-              <p className="text-gray-600 mb-2"> {post.category}</p>
+              <p className="text-gray-600 mb-2">{post.category}</p>
               <p className="text-gray-500 mb-4">
                 Deadline: {new Date(post.deadline).toLocaleDateString()}
               </p>
