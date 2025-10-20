@@ -29,7 +29,7 @@ const UpdateVolunteer = () => {
     setLoading(true); // লোডিং শুরু
     try {
       const res = await fetch(
-        `https://volunteer-server-ten.vercel.app/volunteer/${data._id}`,
+        `http://localhost:3000/${data._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

@@ -38,7 +38,7 @@ const ManageMyPosts = () => {
   const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
-    fetch(`https://volunteer-server-ten.vercel.app/volunteer/${id}`, {
+    fetch(`http://localhost:3000/${id}`, {
       method: "DELETE",
       credentials: "include",
     })

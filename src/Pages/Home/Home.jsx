@@ -9,7 +9,7 @@ const Home = () => {
   const [volunteers, setVolunteers] = useState([]);
 
   useEffect(() => {
-    fetch("https://volunteer-server-ten.vercel.app/volunteer/top")
+    fetch("http://localhost:3000/volunteer/top")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch");
         return res.json();

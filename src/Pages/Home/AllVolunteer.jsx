@@ -6,7 +6,7 @@ const AllVolunteer = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://volunteer-server-ten.vercel.app/volunteer")
+    fetch("http://localhost:3000/volunteer")
       .then((res) => res.json())
       .then((data) => {
         setPosts(data);
