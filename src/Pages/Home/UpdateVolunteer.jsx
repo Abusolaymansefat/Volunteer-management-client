@@ -2,6 +2,7 @@ import { useLoaderData, useNavigate } from "react-router";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import axiosInstance from "../../api/axiosInstance";
 
 const UpdateVolunteer = () => {
   const data = useLoaderData();
@@ -17,7 +18,7 @@ const UpdateVolunteer = () => {
     deadline: data.deadline?.split("T")[0] || "",
   });
 
-  const [loading, setLoading] = useState(false); // লোডিং স্টেট
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,27 +27,20 @@ const UpdateVolunteer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // লোডিং শুরু
+    setLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:3000/${data._id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (res.ok) {
+      const res = await axiosInstance.put(`/${data._id}`, formData);
+      if (res.status === 200) {
         toast.success("Post updated successfully!");
         navigate("/manage-posts");
       } else {
         toast.error("Failed to update post.");
       }
     } catch (error) {
-      toast.error("Error while updating.");
+      console.error(error);
+      toast.error("Error while updating post.");
     } finally {
-      setLoading(false); // লোডিং শেষ
+      setLoading(false);
     }
   };
 

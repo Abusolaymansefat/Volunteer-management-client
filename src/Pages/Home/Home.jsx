@@ -4,27 +4,45 @@ import VolunteerNeedsNow from "./VolunteerNeedsNow";
 import Meaningful from "./Meaningful";
 import CTASection from "./CTASection";
 import BecomeVolunteerSection from "./BecomeVolunteerSection";
+import axiosInstance from "../../api/axiosInstance";
+import useLoadingSpinner from "../../hooks/useLoadingSpinner";
+import { ScaleLoader } from "react-spinners";
 
 const Home = () => {
   const [volunteers, setVolunteers] = useState([]);
+  const { loading, show, hide } = useLoadingSpinner();
 
   useEffect(() => {
-    fetch("http://localhost:3000/volunteer/top")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch");
-        return res.json();
-      })
-      .then((data) => setVolunteers(data))
-      .catch((err) => console.error("Error fetching top volunteers:", err));
+    const fetchTopVolunteers = async () => {
+      show();
+      try {
+        const res = await axiosInstance.get("/volunteer/top");
+        setVolunteers(res.data || []);
+      } catch (err) {
+        console.error("Error fetching top volunteers:", err);
+      } finally {
+        hide();
+      }
+    };
+
+    fetchTopVolunteers();
   }, []);
 
   return (
     <div className="">
-      <Banner />
-      <VolunteerNeedsNow posts={volunteers} />
-      <BecomeVolunteerSection/>
-      <CTASection />
-      <Meaningful />
+      {loading ? (
+        <div className="flex justify-center mt-10">
+          <ScaleLoader color="#5896e6" />
+        </div>
+      ) : (
+        <>
+          <Banner />
+          <VolunteerNeedsNow posts={volunteers} />
+          <BecomeVolunteerSection />
+          <CTASection />
+          <Meaningful />
+        </>
+      )}
     </div>
   );
 };

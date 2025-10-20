@@ -3,60 +3,54 @@ import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { ScaleLoader } from "react-spinners";
+import useLoadingSpinner from "../../hooks/useLoadingSpinner";
+import axiosInstance from "../../api/axiosInstance";
 
 const ManageMyPosts = () => {
   const { user } = useContext(AuthContex);
   const navigate = useNavigate();
-
   const [myPosts, setMyPosts] = useState([]);
+  const { loading, show, hide } = useLoadingSpinner();
 
-  const [loading, setLoading] = useState(true);
+  const fetchMyPosts = async () => {
+    if (!user?.email) return;
+    show();
+    try {
+      const res = await axiosInstance.get(`/volunteer?organizerEmail=${user.email}`);
+      setMyPosts(res.data || []);
+    } catch (error) {
+      toast.error("Failed to fetch your posts");
+      console.error(error);
+    } finally {
+      hide();
+    }
+  };
 
   useEffect(() => {
-    if (!user?.email) return;
-
-    fetch(`https://volunteer-server-ten.vercel.app/volunteer?organizerEmail=${user.email}`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setMyPosts(data || []);
-        setLoading(false);
-      })
-      .catch(() => {
-        toast.error("Failed to fetch your posts");
-        setLoading(false);
-      });
-
-    fetch(`https://volunteer-server-ten.vercel.app/volunteer-requests?userEmail=${user.email}`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .catch(() => toast.error("Failed to fetch your volunteer requests"));
+    fetchMyPosts();
   }, [user]);
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
 
-    fetch(`http://localhost:3000/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.ok) {
-          toast.success("Post deleted successfully!");
-          setMyPosts((prev) => prev.filter((post) => post._id !== id));
-        } else {
-          toast.error("Failed to delete post.");
-        }
-      })
-      .catch(() => toast.error("Error deleting post."));
+    show();
+    try {
+      await axiosInstance.delete(`/volunteer/${id}`);
+      toast.success("Post deleted successfully!");
+      setMyPosts((prev) => prev.filter((post) => post._id !== id));
+    } catch (error) {
+      toast.error("Error deleting post.");
+      console.error(error);
+    } finally {
+      hide();
+    }
   };
 
   if (loading) {
     return (
       <div className="flex justify-center mt-10">
-        <span className="loading loading-bars loading-lg text-primary"></span>
+        <ScaleLoader color="#5896e6" />
       </div>
     );
   }
