@@ -2,106 +2,71 @@ import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../Pages/Home/Home";
 import Register from "../Pages/Register/Register";
-import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Login from "../Pages/Login/Login";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import PrivateRoute from "../routers/PrivateRoute";
+
 import AddVolunteer from "../Pages/Shared/AddVolunteer";
-// import AllVolunteers from "../Pages/Home/AllVolunteer";
-import VolunteerDetails from "../Pages/Shared/VolunteerDetails";
-import VolunteerRequestForm from "../Pages/Shared/VolunteerRequestForm";
 import ManageMyPosts from "../Pages/Shared/ManageMyPosts";
+import MyVolunteerRequests from "../Pages/Home/MyVolunteerRequests";
 import UpdateVolunteer from "../Pages/Home/UpdateVolunteer";
 import AllVolunteer from "../Pages/Home/AllVolunteer";
-import MyVolunteerRequests from "../Pages/Home/MyVolunteerRequests";
+import VolunteerDetails from "../Pages/Shared/VolunteerDetails";
+import VolunteerRequestForm from "../Pages/Shared/VolunteerRequestForm";
 import JoinPage from "../Pages/Home/JoinPage";
+import DashboardLayout from "../Pages/Components/DashboardLayout";
+import ManageUsers from "../Pages/Components/Dashbord/Admin/ManageUsers";
+
 
 const router = createBrowserRouter([
+  // Root Routes (Navbar Layout)
   {
     path: "/",
     Component: RootLayout,
     children: [
-      {
-        index: true,
-        Component: Home,
-      },
-       {
-        path: "/join",
-        Component: JoinPage, 
-      },
-      {
-        path: "/register",
-        Component: Register,
-      },
-      {
-        path: "/login",
-        Component: Login,
-      },
-      {
-        path: "/AddVolunteerPost",
-        element: (
-          <PrivateRoute>
-            <AddVolunteer></AddVolunteer>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/manage-posts",
-        element: (
-          <PrivateRoute>
-            <ManageMyPosts></ManageMyPosts>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/volunteer-request/:_id",
-        element: (
-          <PrivateRoute>
-            <VolunteerRequestForm></VolunteerRequestForm>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/update-volunteer/:id",
-        element: (
-          <PrivateRoute>
-            <UpdateVolunteer />
-          </PrivateRoute>
-        ),
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/${params.id}`).then((res) =>
-            res.json()
-          ),
-        hydrateFallbackElement: (
-          <span className="loading loading-bars loading-md"></span>
-        ),
-      },
+      { index: true, Component: Home },
+      { path: "join", Component: JoinPage },
+      { path: "register", Component: Register },
+      { path: "login", Component: Login },
       {
         path: "volunteer",
         element: (
           <PrivateRoute>
-            <AllVolunteer></AllVolunteer>
+            <AllVolunteer />
           </PrivateRoute>
         ),
       },
-      {
-        path: "my-requests",
-        element: (
-          <PrivateRoute>
-            <MyVolunteerRequests></MyVolunteerRequests>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "volunteer/:_id",
-        element: <VolunteerDetails />,
-      },
+      { path: "volunteer/:_id", element: <VolunteerDetails /> },
     ],
   },
 
+  // Dashboard Routes (Sidebar Layout)
   {
-    path: "/*",
-    Component: ErrorPage,
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      { path: "add-volunteer", element: <AddVolunteer /> },
+      { path: "manage-posts", element: <ManageMyPosts /> },
+      { path: "my-requests", element: <MyVolunteerRequests /> },
+      { path: "manage-users", element: <ManageUsers /> },
+      { path: "update-volunteer/:id", 
+        element: <UpdateVolunteer />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/${params.id}`).then((res) => res.json()),
+        hydrateFallbackElement: (
+          <span className="loading loading-bars loading-md"></span>
+        ),
+      },
+      
+    ],
   },
+
+  // Catch All Route
+  { path: "*", Component: ErrorPage },
 ]);
 
 export default router;

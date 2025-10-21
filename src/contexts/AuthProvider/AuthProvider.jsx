@@ -1,61 +1,101 @@
+
+import { createContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
 } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { auth } from "../../firebase/firebase.init";
-import { AuthContex } from "../AuthContexts/AuthContext";
+import { auth } from "../../firebase/firebase.init"; 
 import axios from "axios";
+import Swal from "sweetalert2";
+
+export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Register user with email & password
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
+  // Login with email & password
   const login = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const logout = () => {
+  // Logout user
+  const logout = async () => {
     setLoading(true);
-    return signOut(auth);
+    try {
+      await signOut(auth);
+      localStorage.removeItem("access-token"); // JWT token remove
+      setUser(null);
+      Swal.fire("Success!", "Logged out successfully.", "success");
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error!", "Failed to logout.", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const loginWithGoogle = () => {
+  // Google login
+  const loginWithGoogle = async () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const currentUser = result.user;
+
+      // Send email to backend for JWT
+      if (currentUser?.email) {
+        const res = await axios.post(
+          "http://localhost:3000/jwt",
+          { email: currentUser.email },
+          { withCredentials: true }
+        );
+        localStorage.setItem("access-token", res.data.token);
+      }
+
+      setUser(currentUser);
+      Swal.fire("Success!", "Logged in with Google!", "success");
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error!", "Failed to login with Google.", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Listen for auth state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
-      
-      if(currentUser?.email){
-        const userData = {email: currentUser.email}
-        axios.post('http://localhost:3000/jwt', userData, {
-          withCredentials: true, 
-          
-        })
-        .then(res => {
-          console.log( res.data)
-          // const token = res.data.token
-          // localStorage.setItem('token', token)
-        })
-        .catch(error => console.log(error))
+
+      // If user logged in, get JWT token
+      if (currentUser?.email) {
+        try {
+          const res = await axios.post(
+            "http://localhost:3000/jwt",
+            { email: currentUser.email },
+            { withCredentials: true }
+          );
+          localStorage.setItem("access-token", res.data.token);
+        } catch (error) {
+          console.error("JWT fetch error:", error);
+        }
       }
-      // console.log('user in the auth state chang', currentUser);
+
+      setLoading(false);
     });
+
     return () => unsubscribe();
   }, []);
 

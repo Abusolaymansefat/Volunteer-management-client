@@ -6,7 +6,6 @@ import {
   FaMoon,
   FaHome,
   FaPlusCircle,
-  FaTasks,
   FaListUl,
   FaClipboardList,
   FaUserPlus,
@@ -40,19 +39,13 @@ const Navbar = () => {
       {user ? (
         <>
           <NavLink
-            to="/AddVolunteerPost"
+            to="/dashboard"
             className="px-4 py-3 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center gap-2 rounded"
             onClick={() => setIsOpen(false)}
           >
-            <FaPlusCircle /> Add Volunteer Post
+            Dashboard
           </NavLink>
-          <NavLink
-            to="/manage-posts"
-            className="px-4 py-3 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center gap-2 rounded"
-            onClick={() => setIsOpen(false)}
-          >
-            <FaTasks /> Manage Posts
-          </NavLink>
+
           <NavLink
             to="/volunteer"
             className="px-4 py-3 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center gap-2 rounded"
@@ -60,13 +53,7 @@ const Navbar = () => {
           >
             <FaListUl /> All Volunteer Posts
           </NavLink>
-          <NavLink
-            to="/my-requests"
-            className="px-4 py-3 hover:bg-gray-200 dark:hover:bg-gray-700 flex items-center gap-2 rounded"
-            onClick={() => setIsOpen(false)}
-          >
-            <FaClipboardList /> My Requests
-          </NavLink>
+
           <div
             onClick={() => {
               setIsOpen(false);
@@ -101,17 +88,13 @@ const Navbar = () => {
   return (
     <div className="w-full z-10 shadow-md bg-gray-100 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
       <div className="py-3 border-b border-gray-300 dark:border-gray-700 px-4 flex items-center justify-between">
-        {/* Logo */}
         <NavLink to="/" className="flex items-center flex-shrink-0">
           <img src={logo} alt="logo" className="h-10 w-auto" />
         </NavLink>
 
-        {/* Desktop Menu */}
         <nav className="hidden md:flex space-x-4 flex-grow justify-center">{links}</nav>
 
-        {/* Right side controls */}
         <div className="flex items-center gap-4">
-          {/* Theme Toggle */}
           <label className="swap swap-rotate cursor-pointer">
             <input
               type="checkbox"
@@ -127,7 +110,6 @@ const Navbar = () => {
             <FaMoon className="swap-off fill-current w-5 h-5" />
           </label>
 
-          {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 border border-gray-300 dark:border-gray-600 rounded-md"
@@ -138,7 +120,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
       {isOpen && (
         <nav className="md:hidden bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-b-xl shadow-md transition-colors duration-300">
           <div className="flex flex-col">{links}</div>
