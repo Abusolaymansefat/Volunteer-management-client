@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
-import logo from "../../assets/logo/Old .png";
+import logo from "../../assets/logo/Logo.svg";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContex);

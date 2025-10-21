@@ -34,45 +34,48 @@ const AddVolunteer = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6 rounded-lg shadow-lg
-      bg-gradient-to-r from-[#c9a3bf] via-[#3d2a3f] to-[#6e676d]
-      text-white"
+    <div
+      className="max-w-5xl mx-auto mt-10 p-8 rounded-lg shadow-2xl
+      bg-gradient-to-r from-[#3b1d3c] via-[#5e3361] to-[#2f1b30]
+      text-[#fefefe]"
     >
-      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+      <h2 className="text-3xl font-extrabold mb-6 text-center drop-shadow-md">
         Add Volunteer Post
       </h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        {/* 2-column layout on md+ */}
-        <div className="flex flex-col md:flex-row md:gap-4">
+        {/* Thumbnail & Title */}
+        <div className="flex flex-col md:flex-row gap-4">
           <input
             {...register("thumbnail")}
             type="text"
             placeholder="Thumbnail URL"
-            className="flex-1 border border-white/40 px-4 py-2 rounded bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="flex-1 border border-white/30 px-4 py-2 rounded-lg bg-white/10 placeholder-gray-200 text-white focus:outline-none focus:ring-2 focus:ring-pink-400"
             required
           />
           <input
             {...register("title")}
             type="text"
             placeholder="Post Title"
-            className="flex-1 border border-white/40 px-4 py-2 rounded bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-white/50 mt-4 md:mt-0"
+            className="flex-1 border border-white/30 px-4 py-2 rounded-lg bg-white/10 placeholder-gray-200 text-white focus:outline-none focus:ring-2 focus:ring-pink-400"
             required
           />
         </div>
 
+        {/* Description */}
         <textarea
           {...register("description")}
           rows="4"
           placeholder="Description"
-          className="w-full border border-white/40 px-4 py-2 rounded bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+          className="w-full border border-white/30 px-4 py-2 rounded-lg bg-white/10 placeholder-gray-200 text-white focus:outline-none focus:ring-2 focus:ring-pink-400"
           required
         />
 
-        <div className="flex flex-col md:flex-row md:gap-4">
+        {/* Category & Location */}
+        <div className="flex flex-col md:flex-row gap-4">
           <select
             {...register("category")}
-            className="flex-1 border border-white/40 px-4 py-2 rounded bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="flex-1 border border-white/30 px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
             required
           >
             <option value="">Select a category</option>
@@ -86,18 +89,19 @@ const AddVolunteer = () => {
             {...register("location")}
             type="text"
             placeholder="Location"
-            className="flex-1 border border-white/40 px-4 py-2 rounded bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-white/50 mt-4 md:mt-0"
+            className="flex-1 border border-white/30 px-4 py-2 rounded-lg bg-white/10 placeholder-gray-200 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
         </div>
 
-        <div className="flex flex-col md:flex-row md:gap-4">
+        {/* Volunteers & Price */}
+        <div className="flex flex-col md:flex-row gap-4">
           <input
             {...register("volunteers")}
             type="number"
             min="1"
-            placeholder="No. of Volunteers Needed"
-            className="flex-1 border border-white/40 px-4 py-2 rounded bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+            placeholder="Volunteers Needed"
+            className="flex-1 border border-white/30 px-4 py-2 rounded-lg bg-white/10 placeholder-gray-200 text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
             required
           />
           <input
@@ -105,41 +109,54 @@ const AddVolunteer = () => {
             type="number"
             min="0"
             placeholder="Price"
-            className="flex-1 border border-white/40 px-4 py-2 rounded bg-white/20 placeholder-white text-white focus:outline-none focus:ring-2 focus:ring-white/50 mt-4 md:mt-0"
+            className="flex-1 border border-white/30 px-4 py-2 rounded-lg bg-white/10 placeholder-gray-200 text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
             required
           />
         </div>
 
-        <div className="flex flex-col md:flex-row md:gap-4">
+        {/* Deadline & Organizer Name */}
+        <div className="flex flex-col md:flex-row gap-4">
           <DatePicker
             selected={deadline}
             onChange={(date) => setDeadline(date)}
             dateFormat="yyyy-MM-dd"
-            className="flex-1 border border-white/40 px-4 py-2 rounded bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="flex-1 border border-white/30 px-4 py-2 rounded-lg bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-pink-400"
             minDate={new Date()}
           />
           <input
             value={user?.displayName || ""}
             readOnly
-            className="flex-1 border border-white/40 px-4 py-2 rounded bg-white/30 text-white mt-4 md:mt-0"
+            className="flex-1 border border-white/30 px-4 py-2 rounded-lg bg-white/10 text-white"
           />
         </div>
 
+        {/* Organizer Email */}
         <input
           value={user?.email || ""}
           readOnly
-          className="w-full border border-white/40 px-4 py-2 rounded bg-white/30 text-white"
+          className="w-full border border-white/30 px-4 py-2 rounded-lg bg-white/10 text-white"
         />
 
-        <div className="text-center mt-4">
+        {/* Submit Button */}
+        <div className="text-center mt-6">
           <button
             type="submit"
             disabled={loading}
-            className="bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600
-              hover:from-pink-700 hover:via-purple-700 hover:to-blue-700
-              text-white px-6 py-2 rounded flex items-center justify-center gap-2"
+            className="relative bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600
+              hover:from-blue-600 hover:via-purple-600 hover:to-pink-600
+              text-white font-semibold px-8 py-3 rounded-lg
+              shadow-lg shadow-pink-500/30
+              transition-all duration-300 ease-in-out
+              hover:shadow-xl hover:shadow-purple-600/40
+              hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
           >
-            {loading ? <><RingLoader size={20} color="#fff" /> Adding...</> : "Add Post"}
+            {loading ? (
+              <>
+                <RingLoader size={20} color="#fff" /> Adding...
+              </>
+            ) : (
+              "Add Post"
+            )}
           </button>
         </div>
       </form>
