@@ -1,78 +1,57 @@
 import { useContext } from "react";
-import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
-import { toast } from "react-toastify";
-import registerLottie from "../../assets/lottes/register.json";
-import Lottie from "lottie-react";
 import { Link, useNavigate } from "react-router";
-import { updateProfile } from "firebase/auth";
+import { toast } from "react-toastify";
+import Lottie from "lottie-react";
+import registerLottie from "../../assets/lottes/register.json";
+import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 
 const Register = () => {
-  const { createUser } = useContext(AuthContex);
+  const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const name = form.name.value;
-  const email = form.email.value;
-  const photo = form.photo.value;
-  const password = form.password.value;
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const photo = form.photo.value;
+    const password = form.password.value;
 
+    // Password validation
+    const uppercaseRegex = /[A-Z]/;
+    const lowercaseRegex = /[a-z]/;
 
-  const uppercaseRegex = /[A-Z]/;
-  const lowercaseRegex = /[a-z]/;
+    if (!uppercaseRegex.test(password)) {
+      toast.error("Password must contain at least one uppercase letter.");
+      return;
+    }
+    if (!lowercaseRegex.test(password)) {
+      toast.error("Password must contain at least one lowercase letter.");
+      return;
+    }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
 
-  if (!uppercaseRegex.test(password)) {
-    toast.error("Password must contain at least one uppercase letter.");
-    return;
-  }
-
-  if (!lowercaseRegex.test(password)) {
-    toast.error("Password must contain at least one lowercase letter.");
-    return;
-  }
-
-  if (password.length < 6) {
-    toast.error("Password must be at least 6 characters long.");
-    return;
-  }
-
-  createUser(email, password)
-    .then((result) => {
-      const user = result.user;
-
-    
-      updateProfile(user, {
-        displayName: name,
-        photoURL: photo,
-      })
-        .then(() => {
-          toast.success("Registration successful!");
-          form.reset();
-          navigate("/");
-        })
-        .catch((err) => {
-          toast.error("Failed to set name and photo");
-          console.error(err);
-        });
-    })
-    .catch((error) => {
-      toast.error(` ${error.message}`);
-    });
-};
+    try {
+      await createUser(email, password, name, photo);
+      toast.success("Registration successful!");
+      form.reset();
+      navigate("/");
+    } catch (err) {
+      toast.error(`Registration failed: ${err.message}`);
+    }
+  };
 
   return (
     <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left">
-          <Lottie
-            style={{ width: "400px" }}
-            animationData={registerLottie}
-            loop={true}
-          />
+          <Lottie style={{ width: "400px" }} animationData={registerLottie} loop={true} />
         </div>
 
-        <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <div className="card bg-base-100 w-full max-w-sm shadow-2xl">
           <div className="card-body">
             <h1 className="text-4xl font-bold text-center mb-4">Register</h1>
 

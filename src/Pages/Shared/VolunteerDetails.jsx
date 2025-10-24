@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
 import { FiEdit, FiTrash2, FiUserPlus } from "react-icons/fi";
 import { RingLoader, ScaleLoader } from "react-spinners";
@@ -8,7 +8,7 @@ import axiosInstance from "../../api/axiosInstance";
 
 const VolunteerDetails = () => {
   const { _id } = useParams();
-  const { user } = useContext(AuthContex);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [post, setPost] = useState(null);

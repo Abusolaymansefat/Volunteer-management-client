@@ -1,5 +1,4 @@
-
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -7,46 +6,72 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
-import { auth } from "../../firebase/firebase.init"; 
-import axios from "axios";
+import { auth } from "../../firebase/firebase.init";
+import axiosInstance from "../../api/axiosInstance";
 import Swal from "sweetalert2";
-
-export const AuthContext = createContext(null);
+import { AuthContext } from "../AuthContexts/AuthContext";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Register user with email & password
-  const createUser = (email, password) => {
+  // Register user with Email & Password
+  const createUser = (email, password, name, photoURL) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then(async (result) => {
+        const user = result.user;
+
+        // Update Firebase profile
+        await updateProfile(user, {
+          displayName: name,
+          photoURL,
+        });
+
+        // Insert to MongoDB users collection
+        await axiosInstance.post("/users", {
+          name,
+          email,
+          photoURL,
+          role: "user",
+        });
+
+        setUser(user);
+        return user;
+      })
+      .finally(() => setLoading(false));
   };
 
-  // Login with email & password
+  // Login with Email & Password
   const login = (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        setUser(result.user);
+        return result.user;
+      })
+      .finally(() => setLoading(false));
   };
 
-  // Logout user
+  // Logout
   const logout = async () => {
     setLoading(true);
     try {
       await signOut(auth);
-      localStorage.removeItem("access-token"); // JWT token remove
+      localStorage.removeItem("access-token");
       setUser(null);
       Swal.fire("Success!", "Logged out successfully.", "success");
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       Swal.fire("Error!", "Failed to logout.", "error");
     } finally {
       setLoading(false);
     }
   };
 
-  // Google login
+  // Google Login
   const loginWithGoogle = async () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
@@ -54,21 +79,29 @@ const AuthProvider = ({ children }) => {
       const result = await signInWithPopup(auth, provider);
       const currentUser = result.user;
 
-      // Send email to backend for JWT
       if (currentUser?.email) {
-        const res = await axios.post(
-          "http://localhost:3000/jwt",
+        // JWT token
+        const res = await axiosInstance.post(
+          "/jwt",
           { email: currentUser.email },
           { withCredentials: true }
         );
         localStorage.setItem("access-token", res.data.token);
+
+        // MongoDB insert
+        await axiosInstance.post("/users", {
+          name: currentUser.displayName,
+          email: currentUser.email,
+          photoURL: currentUser.photoURL,
+          role: "user",
+        });
       }
 
       setUser(currentUser);
       Swal.fire("Success!", "Logged in with Google!", "success");
-    } catch (error) {
-      console.error(error);
-      Swal.fire("Error!", "Failed to login with Google.", "error");
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error!", "Google login failed.", "error");
     } finally {
       setLoading(false);
     }
@@ -79,17 +112,25 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
 
-      // If user logged in, get JWT token
       if (currentUser?.email) {
         try {
-          const res = await axios.post(
-            "http://localhost:3000/jwt",
+          // JWT token
+          const res = await axiosInstance.post(
+            "/jwt",
             { email: currentUser.email },
             { withCredentials: true }
           );
           localStorage.setItem("access-token", res.data.token);
-        } catch (error) {
-          console.error("JWT fetch error:", error);
+
+          // MongoDB insert (idempotent, won't duplicate if user exists)
+          await axiosInstance.post("/users", {
+            name: currentUser.displayName,
+            email: currentUser.email,
+            photoURL: currentUser.photoURL,
+            role: "user",
+          });
+        } catch (err) {
+          console.error("MongoDB insert error:", err);
         }
       }
 
@@ -108,11 +149,7 @@ const AuthProvider = ({ children }) => {
     loginWithGoogle,
   };
 
-  return (
-    <AuthContex.Provider value={authInfo}>
-      {children}
-    </AuthContex.Provider>
-  );
+  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

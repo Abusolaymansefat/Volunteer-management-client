@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { AuthContex } from "../contexts/AuthContexts/AuthContext";
+// import { AuthContex } from "../contexts/AuthContexts/AuthContext";
 import { Navigate, useLocation } from "react-router";
+import { AuthContext } from "../contexts/AuthContexts/AuthContext";
 
 const PrivateRoute = ({ children }) => {
-  const { user, loading } = useContext(AuthContex);
+  const { user, loading } = useContext(AuthContext);
   const location = useLocation();
 
   if (loading) return <div className="text-center">Loading...</div>;

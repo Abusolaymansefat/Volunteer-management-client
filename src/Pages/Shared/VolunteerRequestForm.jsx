@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router";
-import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
 import { FiSend } from "react-icons/fi";
 import { ClipLoader } from "react-spinners";
@@ -8,7 +8,7 @@ import axiosInstance from "../../api/axiosInstance";
 
 const VolunteerRequestForm = () => {
   const { _id } = useParams();
-  const { user } = useContext(AuthContex);
+  const { user } = useContext(AuthContext);
 
   const [post, setPost] = useState(null);
   const [suggestion, setSuggestion] = useState("");

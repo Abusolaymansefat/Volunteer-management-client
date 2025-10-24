@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
@@ -8,7 +8,7 @@ import useLoadingSpinner from "../../hooks/useLoadingSpinner";
 import axiosInstance from "../../api/axiosInstance";
 
 const ManageMyPosts = () => {
-  const { user } = useContext(AuthContex);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [myPosts, setMyPosts] = useState([]);
   const { loading, show, hide } = useLoadingSpinner();

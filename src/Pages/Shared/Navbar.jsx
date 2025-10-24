@@ -13,11 +13,11 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
 import logo from "../../assets/logo/Logo.svg";
+import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 
 const Navbar = () => {
-  const { user, logout } = useContext(AuthContex);
+  const { user, logout } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogOut = () => {

@@ -12,10 +12,13 @@ import MyVolunteerRequests from "../Pages/Home/MyVolunteerRequests";
 import UpdateVolunteer from "../Pages/Home/UpdateVolunteer";
 import AllVolunteer from "../Pages/Home/AllVolunteer";
 import VolunteerDetails from "../Pages/Shared/VolunteerDetails";
-import VolunteerRequestForm from "../Pages/Shared/VolunteerRequestForm";
+// import VolunteerRequestForm from "../Pages/Shared/VolunteerRequestForm";
 import JoinPage from "../Pages/Home/JoinPage";
 import DashboardLayout from "../Pages/Components/DashboardLayout";
 import ManageUsers from "../Pages/Components/Dashbord/Admin/ManageUsers";
+import VolunteerRequestForm from "../Pages/Shared/VolunteerRequestForm";
+import UpdatePost from "../Pages/Shared/UpdatePost";
+import AdminDashboard from "../Pages/Components/Dashbord/Admin/AdminDashboard";
 
 
 const router = createBrowserRouter([
@@ -37,6 +40,14 @@ const router = createBrowserRouter([
         ),
       },
       { path: "volunteer/:_id", element: <VolunteerDetails /> },
+      {
+        path: "volunteer-request/:_id",
+        element: (
+          <PrivateRoute>
+            <VolunteerRequestForm />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 
@@ -49,19 +60,25 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      { path: "", element: <AdminDashboard /> },
       { path: "add-volunteer", element: <AddVolunteer /> },
       { path: "manage-posts", element: <ManageMyPosts /> },
       { path: "my-requests", element: <MyVolunteerRequests /> },
       { path: "manage-users", element: <ManageUsers /> },
-      { path: "update-volunteer/:id", 
-        element: <UpdateVolunteer />,
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/${params.id}`).then((res) => res.json()),
-        hydrateFallbackElement: (
-          <span className="loading loading-bars loading-md"></span>
+      {
+        path: "update-volunteer/:id",
+        element: (
+          <PrivateRoute>
+            <UpdatePost />
+          </PrivateRoute>
         ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/volunteer-posts/${params.id}`).then((res) =>
+            res.json()
+          ),  // ✅ endpoint ঠিক করা হলো
       },
-      
+
+
     ],
   },
 

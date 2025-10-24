@@ -11,11 +11,11 @@ import {
 } from "react-icons/fa";
 import Swal from "sweetalert2";
 import logo from "../../assets/logo/Logo.svg";
-import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
+import {AuthContext } from "../../contexts/AuthContexts/AuthContext";
 
 export default function DashboardLayout() {
   const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContex);
+  const { user, logout } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {

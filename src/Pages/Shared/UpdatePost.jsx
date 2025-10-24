@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const UpdatePost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContex);
+  const { user } = useContext(AuthContext);
   const [post, setPost] = useState(null);
 
   useEffect(() => {

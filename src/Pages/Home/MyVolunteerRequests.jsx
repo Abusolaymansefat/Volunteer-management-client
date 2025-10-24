@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContex } from "../../contexts/AuthContexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
 import { FiXCircle } from "react-icons/fi";
 import { ScaleLoader } from "react-spinners";
@@ -7,7 +7,7 @@ import useLoadingSpinner from "../../hooks/useLoadingSpinner";
 import axiosInstance from "../../api/axiosInstance";
 
 const MyVolunteerRequests = () => {
-  const { user } = useContext(AuthContex);
+  const { user } = useContext(AuthContext);
   const [requests, setRequests] = useState([]);
   const { loading, show, hide } = useLoadingSpinner();
 

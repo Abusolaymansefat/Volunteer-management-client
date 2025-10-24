@@ -6,6 +6,7 @@ import useLoadingSpinner from "../../hooks/useLoadingSpinner";
 
 const AllVolunteer = () => {
   const [posts, setPosts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // 🔹 search query state
   const { loading, show, hide } = useLoadingSpinner();
 
   useEffect(() => {
@@ -24,6 +25,13 @@ const AllVolunteer = () => {
     fetchPosts();
   }, []);
 
+  // 🔹 Filter posts based on searchQuery
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64 mt-10">
@@ -32,14 +40,26 @@ const AllVolunteer = () => {
     );
   }
 
-  if (posts.length === 0)
+  if (filteredPosts.length === 0)
     return <p className="text-center mt-10">No volunteer posts found.</p>;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold mb-8 text-center">All Volunteer Posts</h2>
+      <h2 className="text-3xl font-bold mb-4 text-center">All Volunteer Posts</h2>
+
+      {/* 🔹 Search Input */}
+      <div className="flex justify-center mb-8">
+        <input
+          type="text"
+          placeholder="Search by title or category..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border border-gray-300 rounded px-4 py-2 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-[#5896e6]"
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {posts.map((post) => (
+        {filteredPosts.map((post) => (
           <div key={post._id} className="rounded-lg shadow-md overflow-hidden">
             <img
               src={post.thumbnail}
