@@ -5,7 +5,7 @@ import { ClipLoader } from "react-spinners";
 import axiosInstance from "../../api/axiosInstance";
 
 const UpdateVolunteer = () => {
-  const data = useLoaderData();
+  const data = useLoaderData(); // Loaded from loader
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -29,15 +29,15 @@ const UpdateVolunteer = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axiosInstance.put(`/${data._id}`, formData);
+      const res = await axiosInstance.put(`/volunteer/${data._id}`, formData);
       if (res.status === 200) {
         toast.success("Post updated successfully!");
-        navigate("/manage-posts");
+        navigate("/dashboard/manage-posts");
       } else {
         toast.error("Failed to update post.");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Update Error:", error);
       toast.error("Error while updating post.");
     } finally {
       setLoading(false);
@@ -45,7 +45,7 @@ const UpdateVolunteer = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 shadow-md p-6 rounded bg-white dark:bg-gray-900">
+    <div className="max-w-2xl mx-auto mt-10 p-6 shadow-md rounded bg-white dark:bg-gray-900">
       <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
         Update Volunteer Post
       </h2>
@@ -71,7 +71,7 @@ const UpdateVolunteer = () => {
           value={formData.description}
           onChange={handleChange}
           placeholder="Description"
-          className="w-full border px-3 py-2 rounded"
+          className="w-full border px-3 py-2 rounded h-28"
           required
         />
         <select
@@ -116,7 +116,7 @@ const UpdateVolunteer = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 flex items-center justify-center gap-2"
+          className="w-full bg-blue-600 text-white py-2 rounded flex justify-center items-center gap-2 hover:bg-blue-700"
         >
           {loading ? (
             <>

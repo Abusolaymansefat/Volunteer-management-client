@@ -9,16 +9,15 @@ import PrivateRoute from "../routers/PrivateRoute";
 import AddVolunteer from "../Pages/Shared/AddVolunteer";
 import ManageMyPosts from "../Pages/Shared/ManageMyPosts";
 import MyVolunteerRequests from "../Pages/Home/MyVolunteerRequests";
-import UpdateVolunteer from "../Pages/Home/UpdateVolunteer";
 import AllVolunteer from "../Pages/Home/AllVolunteer";
 import VolunteerDetails from "../Pages/Shared/VolunteerDetails";
-// import VolunteerRequestForm from "../Pages/Shared/VolunteerRequestForm";
 import JoinPage from "../Pages/Home/JoinPage";
 import DashboardLayout from "../Pages/Components/DashboardLayout";
 import ManageUsers from "../Pages/Components/Dashbord/Admin/ManageUsers";
 import VolunteerRequestForm from "../Pages/Shared/VolunteerRequestForm";
 import UpdatePost from "../Pages/Shared/UpdatePost";
 import AdminDashboard from "../Pages/Components/Dashbord/Admin/AdminDashboard";
+import UpdateVolunteer from "../Pages/Home/UpdateVolunteer";
 
 
 const router = createBrowserRouter([
@@ -65,20 +64,15 @@ const router = createBrowserRouter([
       { path: "manage-posts", element: <ManageMyPosts /> },
       { path: "my-requests", element: <MyVolunteerRequests /> },
       { path: "manage-users", element: <ManageUsers /> },
-      {
+       {
         path: "update-volunteer/:id",
-        element: (
-          <PrivateRoute>
-            <UpdatePost />
-          </PrivateRoute>
-        ),
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/volunteer-posts/${params.id}`).then((res) =>
-            res.json()
-          ),  // ✅ endpoint ঠিক করা হলো
+        element: <UpdateVolunteer />,
+        loader: async ({ params }) => {
+          const res = await fetch(`https://volunteer-server-ten.vercel.app/volunteer/${params.id}`);
+          if (!res.ok) throw new Error("Failed to load post");
+          return res.json();
+        },
       },
-
-
     ],
   },
 
